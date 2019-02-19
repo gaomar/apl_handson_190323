@@ -1,0 +1,1085 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Alexaスキル開発ハンズオン ～S3を繋げてAPL対応スキルを作ろう!～</title>
+  <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../elements/codelab.html">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <style is="custom-style">
+    body {
+      font-family: "Roboto",sans-serif;
+      background: var(--google-codelab-background, #F8F9FA);
+    }
+  </style>
+  
+</head>
+<body unresolved class="fullbleed">
+
+  <google-codelab title="Alexaスキル開発ハンズオン ～S3を繋げてAPL対応スキルを作ろう!～"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="プロジェクトを作成する" duration="0">
+        <p>新規スキルのプロジェクトを作成します。こちらにアクセスしてください。<br><a href="https://developer.amazon.com/ja/alexa-skills-kit" target="_blank">https://developer.amazon.com/ja/alexa-skills-kit</a></p>
+<h2>1-1. スキル開発を始めよう！</h2>
+<p>［スキル開発を始める］をクリックします。</p>
+<p><img alt="s100" src="img/b271f296a74176d1.png"></p>
+<p>Amazonのアカウント情報を入力してログインします。</p>
+<p><img alt="s101" src="img/2edc81633369d120.png"></p>
+<p>［スキルの作成］ボタンをクリックします。</p>
+<p><img alt="s102" src="img/8533ffd0f4d85bf8.png"></p>
+<p>スキル名「メモスキル」を入力して、［カスタム］と［Alexaがホスト］をそれぞれ選択します。<br>最後に［スキルを作成］ボタンをクリックします。</p>
+<p><img alt="s103" src="img/7f4eae6e08da59ca.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="スロットとインテントを作成しよう！" duration="0">
+        <h2>2-1. スロットを作成する</h2>
+<p>メモをセーブとロードのスロットを作成します。左側メニューのスロットタイプにある［追加］ボタンをクリックします。</p>
+<p>「MemoSlot」と入力して［カスタムスロットタイプを作成］ボタンをクリックします。</p>
+<p><img alt="s105" src="img/de790a037289952.png"></p>
+<p>「メモをセーブ」や「メモをロード」という言葉に反応させたいので、セーブとロードをそれぞれ登録します。同義語にそれ以外の言葉も登録しておきます。</p>
+<p><img alt="s106" src="img/d8ceaeeebab8dfce.png"></p>
+<h2>2-2. インテントを作成する</h2>
+<p>MainIntentを作成します。左側メニューのインテントにある［追加］ボタンをクリックします。</p>
+<p>「MainIntent」と入力して［カスタムインテントを作成］ボタンをクリックします。</p>
+<p><img alt="s107" src="img/8b91e44ad351e7b6.png"></p>
+<p>インテントスロットを追加します。<code>any</code>と入力して［＋］をクリックします。プルダウンメニューから<code>AMAZON.SearchQuery</code>を選択します。［ダイアログを編集］リンクをクリックします。</p>
+<p><img alt="s108" src="img/96a17cd296f3cecf.png"></p>
+<p>必須入力を<code>�</code>��効化にします。Alexaの音声プロンプト部分に「メモする内容を言ってください。」と入力します。</p>
+<p>ユーザー発話部分は<code>{any}</code>と入力します。ユーザーが発話したらanyに格納されます。</p>
+<p><img alt="s109" src="img/d718b8fadaaa7bb6.png"></p>
+<p>MainIntent部分をクリックして、元の画面に戻ります。</p>
+<p><img alt="s110" src="img/557d78ea3db870f0.png"></p>
+<p>「オートデリゲートを無効化」をプルダウンメニューから選択します。</p>
+<p><img alt="s111" src="img/e85fda01d5860de.png"></p>
+<p>「stat」と入力して［＋］をクリックします。プルダウンメニューは先程作成した<code>MemoSlot</code>を選択します。</p>
+<p><img alt="s112" src="img/b8ad8b1b577ebdec.png"></p>
+<p>サンプル発話に考えられる文章を登録していきます。</p>
+<p>これで「メモをセーブ」や「メモをロード」という言葉に反応できるようになりました。</p>
+<p><img alt="s113" src="img/807f2085ad2da65c.png"></p>
+<p>最後に必ず「保存」と「ビルド」を実行しておいてください。</p>
+<p><img alt="s114" src="img/79c3fd94fb287e5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Alexa-hostedでスキルを作ろう" duration="0">
+        <h2>3-1. S3にアクセスするプログラムを追加する</h2>
+<p>コードエディタタブをクリックします。左側にあるファイルから<code>package.json</code>を開きます。</p>
+<p>S3のnpm依存関係を追加します。</p>
+<pre><code>&#34;ask-sdk-s3-persistence-adapter&#34;: &#34;^2.0.0&#34;
+</code></pre>
+<p><img alt="s115" src="img/a66c1eb28cae9887.png"></p>
+<pre><code>{
+  &#34;name&#34;: &#34;hello-world&#34;,
+  &#34;version&#34;: &#34;0.9.0&#34;,
+  &#34;description&#34;: &#34;alexa utility for quickly building skills&#34;,
+  &#34;main&#34;: &#34;index.js&#34;,
+  &#34;scripts&#34;: {
+    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
+  },
+  &#34;author&#34;: &#34;Amazon Alexa&#34;,
+  &#34;license&#34;: &#34;ISC&#34;,
+  &#34;dependencies&#34;: {
+    &#34;ask-sdk-core&#34;: &#34;^2.0.7&#34;,
+    &#34;ask-sdk-model&#34;: &#34;^1.4.1&#34;,
+    &#34;aws-sdk&#34;: &#34;^2.326.0&#34;,
+    &#34;ask-sdk-s3-persistence-adapter&#34;: &#34;^2.0.0&#34;  // ←これを追加
+  }
+}
+</code></pre>
+<h2>3-2. index.jsファイルを編集する</h2>
+<p>プログラムの中身を編集します。<code>index.js</code>ファイルを開きます。</p>
+<p><img alt="s116" src="img/dbb0f2745f2acdfe.png"></p>
+<p>ファイルは下記からコピーしてください。</p>
+<pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
+
+// 1. ask persistence adapterの読み込み
+const persistenceAdapter = require(&#39;ask-sdk-s3-persistence-adapter&#39;);
+
+// 2. スキルビルダーをアダプターを使用して初期化
+const skillBuilder = Alexa.SkillBuilders.custom().withPersistenceAdapter(
+    new persistenceAdapter.S3PersistenceAdapter({bucketName:process.env.S3_PERSISTENCE_BUCKET})
+);
+
+// スキル起動時
+const LaunchRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;LaunchRequest&#39;;
+    },
+    handle(handlerInput) {
+        const speechText = &#39;メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。&#39;;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// メモを保存or読み取り判別
+const MainIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;MainIntent&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.dialogState === &#39;STARTED&#39;;
+    },
+    async handle(handlerInput) {
+        const intent = handlerInput.requestEnvelope.request.intent;
+        const memoSlot = intent.slots.stat;
+        var modeVal = &#39;&#39;;
+        
+        if (memoSlot.value !== null) {
+            if (memoSlot.resolutions[&#34;resolutionsPerAuthority&#34;][0][&#34;status&#34;][&#34;code&#34;] === &#39;ER_SUCCESS_MATCH&#39;) {
+                modeVal = memoSlot.resolutions[&#34;resolutionsPerAuthority&#34;][0][&#34;values&#34;][0][&#34;value&#34;][&#34;name&#34;];
+                
+                if (modeVal === &#39;save&#39;) {
+                    // メモする内容を聞きに行く
+                    return handlerInput.responseBuilder.addDelegateDirective().getResponse();
+                } else {
+                    // S3から保存しているメモを取得
+                    const attributesManager = handlerInput.attributesManager;
+                    const s3Attributes = await attributesManager.getPersistentAttributes() || {};
+                    const items = s3Attributes.hasOwnProperty(&#39;memoList&#39;)? s3Attributes.memoList : [];
+                    var speechText = &#39;&#39;;
+                    var memoData = &#39;&#39;;
+                    
+                    if (items.length &gt; 0) {
+                        items.forEach(function( value ) {
+                             memoData += `「${value.memo}」`;
+                        });
+                        speechText = `保存されているメモは${items.length}つあります。${memoData}です。`;    
+                    }
+                    return handlerInput.responseBuilder
+                        .speak(speechText)
+                        .reprompt(speechText)
+                        .getResponse();
+                }
+            }
+        } 
+        
+    }
+};
+
+// メモする言葉を取得完了
+const MemoCompletedHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;MainIntent&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.dialogState === &#39;IN_PROGRESS&#39;;
+    },
+    async handle(handlerInput) {
+        const intent = handlerInput.requestEnvelope.request.intent;
+        const memoVal = intent.slots.any.value;
+        const speechText = `「${memoVal}」とメモしたよ`;
+        const uuid = getUniqueStr();
+        const attributesManager = handlerInput.attributesManager;
+        const s3Attributes = await attributesManager.getPersistentAttributes() || {};
+        const memoList = s3Attributes.hasOwnProperty(&#39;memoList&#39;)? s3Attributes.memoList : [];
+        
+        let memoData = {
+            &#34;uuid&#34;: uuid,
+            &#34;memo&#34;: memoVal
+        };
+        memoList.push(memoData);
+        
+        const sendData = {
+            &#34;memoList&#34;: memoList
+        }
+        attributesManager.setPersistentAttributes(sendData);
+        await attributesManager.savePersistentAttributes();
+    
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+        
+    }
+};
+
+// UUID作成
+function getUniqueStr(myStrong){
+    var strong = 1000;
+    if (myStrong) strong = myStrong;
+    return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16);
+}
+
+// ヘルプ
+const HelpIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.HelpIntent&#39;;
+    },
+    handle(handlerInput) {
+        const speechText = &#39;メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。それではどうぞ！&#39;;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// キャンセルor終了と発話された
+const CancelAndStopIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; (handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.CancelIntent&#39;
+                || handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.StopIntent&#39;);
+    },
+    handle(handlerInput) {
+        const speechText = &#39;バイバイ！またね！&#39;;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .getResponse();
+    }
+};
+
+// セッション切れ
+const SessionEndedRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;SessionEndedRequest&#39;;
+    },
+    handle(handlerInput) {
+        // Any cleanup logic goes here.
+        return handlerInput.responseBuilder.getResponse();
+    }
+};
+
+// エラー時
+const ErrorHandler = {
+    canHandle() {
+        return true;
+    },
+    handle(handlerInput, error) {
+        console.log(`~~~~ Error handled: ${error.message}`);
+        const speechText = `不明なエラーが出ました`;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// 各種Handlerを登録する
+exports.handler = skillBuilder
+    .addRequestHandlers(
+        LaunchRequestHandler,
+        HelpIntentHandler,
+        MainIntentHandler,
+        MemoCompletedHandler,
+        CancelAndStopIntentHandler,
+        SessionEndedRequestHandler)
+    .addErrorHandlers(
+        ErrorHandler)
+    .lambda();
+
+</code></pre>
+<h2>3-3. スキルを実行しよう！</h2>
+<p>デプロイが終わったらテストタブをクリックして、スキルをテストしてみましょう。</p>
+<p>「開発中」に切り替えてから「メモスキルをひらいて」と入力します。</p>
+<p><img alt="s117" src="img/5df746283e19ba42.png"></p>
+<h2>3-4. S3にあるファイルを確認しよう！</h2>
+<p>コードエディタの左下にある<code>Media storage: S3 [0.0/5GB]</code>というリンクをクリックします。</p>
+<p><img alt="s118" src="img/8c5325fc2e25fe4.png"></p>
+<p>するとAWSのS3ページが開きます。そこにメモしたファイルが保存されているので、スキルを再起動してもメモをロードできるようになっています。</p>
+<p><img alt="s119" src="img/f4ff7407ad560ec4.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="APL対応しよう！" duration="0">
+        <h2>4-1. APLファイルを作成しよう！</h2>
+<p>APLの画面レイアウトを作成するために、ファイルを新規で作成します。<br><br>Alexa-hostedを使えば、簡単にファイルを作成することができます。</p>
+<p><code>コ</code>ードエディタタブをクリックします。<code>lambdda</code>フォルダを選択して、左上にある新規作成アイコンをクリックします。</p>
+<p><img alt="s120" src="img/48c53533f57833fb.png"></p>
+<p><code>apl_memolist.json</code>という名前でファイルを作成しましょう。［Create File］ボタンをクリックします。</p>
+<p><img alt="s121" src="img/a190bd77567c6459.png"></p>
+<p>入力する内容はこちらです。</p>
+<pre><code>{
+    &#34;type&#34;: &#34;APL&#34;,
+    &#34;version&#34;: &#34;1.0&#34;,
+    &#34;theme&#34;: &#34;dark&#34;,
+    &#34;import&#34;: [
+        {
+            &#34;name&#34;: &#34;alexa-layouts&#34;,
+            &#34;version&#34;: &#34;1.0.0&#34;
+        }
+    ],
+    &#34;resources&#34;: [],
+    &#34;styles&#34;: {},
+    &#34;layouts&#34;: {
+        &#34;MemoList&#34;: {
+            &#34;parameters&#34;: [
+                &#34;listData&#34;
+            ],
+            &#34;item&#34;: {
+                &#34;type&#34;: &#34;Container&#34;,
+                &#34;width&#34;: &#34;100vw&#34;,
+                &#34;height&#34;: &#34;100vh&#34;,
+                &#34;direction&#34;: &#34;column&#34;,
+                &#34;item&#34;: {
+                    &#34;type&#34;: &#34;Sequence&#34;,
+                    &#34;grow&#34;: 1,
+                    &#34;height&#34;: &#34;80vh&#34;,
+                    &#34;scrollDirection&#34;: &#34;vertical&#34;,
+                    &#34;paddingLeft&#34;: &#34;@marginLeft&#34;,
+                    &#34;paddingRight&#34;: &#34;@marginRight&#34;,
+                    &#34;data&#34;: &#34;${listData}&#34;,
+                    &#34;numbered&#34;: true,
+                    &#34;items&#34;: {
+                        &#34;type&#34;: &#34;VerticalListItem&#34;,
+                        &#34;primaryText&#34;: &#34;${data.memo}&#34;
+                    }
+                }
+            }
+        },
+        &#34;VerticalListItem&#34;: {
+            &#34;parameters&#34;: [
+                &#34;primaryText&#34;
+            ],
+            &#34;item&#34;: {
+                &#34;type&#34;: &#34;Container&#34;,
+                &#34;direction&#34;: &#34;row&#34;,
+                &#34;height&#34;: 125,
+                &#34;width&#34;: &#34;100%&#34;,
+                &#34;alignItems&#34;: &#34;center&#34;,
+                &#34;separator&#34;: true,
+                &#34;items&#34;: [
+                    {
+                        &#34;type&#34;: &#34;Text&#34;,
+                        &#34;text&#34;: &#34;${ordinal}&#34;,
+                        &#34;color&#34;: &#34;white&#34;,
+                        &#34;spacing&#34;: &#34;5dp&#34;
+                    },
+                    {
+                        &#34;type&#34;: &#34;Text&#34;,
+                        &#34;text&#34;: &#34;${primaryText}&#34;,
+                        &#34;color&#34;: &#34;white&#34;,
+                        &#34;width&#34;: &#34;100vw&#34;,
+                        &#34;spacing&#34;: &#34;5vw&#34;
+                    }
+                ]
+            }
+        }
+    },
+    &#34;mainTemplate&#34;: {
+        &#34;parameters&#34;: [
+            &#34;payload&#34;
+        ],
+        &#34;items&#34;: [
+            {
+                &#34;type&#34;: &#34;MemoList&#34;,
+                &#34;listData&#34;: &#34;${payload.MemoSkill.memoList}&#34;
+            }
+        ]
+    }
+}
+</code></pre>
+<p>ファイルを保存し忘れないようにしましょう。</p>
+<p><img alt="s122" src="img/50bc29da340f99f7.png"></p>
+<h2>4-2. APLを適用しよう！</h2>
+<p>先程作成したjsonファイルをプログラムに適用します。<br><br>index.jsファイルを書き換えます。</p>
+<p>61行目にある<code>addDirective</code>のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。</p>
+<pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
+
+// 1. ask persistence adapterの読み込み
+const persistenceAdapter = require(&#39;ask-sdk-s3-persistence-adapter&#39;);
+
+// 2. スキルビルダーをアダプターを使用して初期化
+const skillBuilder = Alexa.SkillBuilders.custom().withPersistenceAdapter(
+    new persistenceAdapter.S3PersistenceAdapter({bucketName:process.env.S3_PERSISTENCE_BUCKET})
+);
+
+// スキル起動時
+const LaunchRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;LaunchRequest&#39;;
+    },
+    handle(handlerInput) {
+        const speechText = &#39;メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。&#39;;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// メモを保存or読み取り判別
+const MainIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;MainIntent&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.dialogState === &#39;STARTED&#39;;
+    },
+    async handle(handlerInput) {
+        const intent = handlerInput.requestEnvelope.request.intent;
+        const memoSlot = intent.slots.stat;
+        var modeVal = &#39;&#39;;
+        
+        if (memoSlot.value !== null) {
+            if (memoSlot.resolutions[&#34;resolutionsPerAuthority&#34;][0][&#34;status&#34;][&#34;code&#34;] === &#39;ER_SUCCESS_MATCH&#39;) {
+                modeVal = memoSlot.resolutions[&#34;resolutionsPerAuthority&#34;][0][&#34;values&#34;][0][&#34;value&#34;][&#34;name&#34;];
+                
+                if (modeVal === &#39;save&#39;) {
+                    // メモする内容を聞きに行く
+                    return handlerInput.responseBuilder.addDelegateDirective().getResponse();
+                } else {
+                    // S3から保存しているメモを取得
+                    const attributesManager = handlerInput.attributesManager;
+                    const s3Attributes = await attributesManager.getPersistentAttributes() || {};
+                    const items = s3Attributes.hasOwnProperty(&#39;memoList&#39;)? s3Attributes.memoList : [];
+                    var speechText = &#39;&#39;;
+                    var memoData = &#39;&#39;;
+                    
+                    if (items.length &gt; 0) {
+                        items.forEach(function( value ) {
+                             memoData += `「${value.memo}」`;
+                        });
+                        speechText = `保存されているメモは${items.length}つあります。${memoData}です。`;    
+                    }
+                    return handlerInput.responseBuilder
+                        .speak(speechText)
+                        .reprompt(speechText)
+                        .addDirective({
+                            type : &#39;Alexa.Presentation.APL.RenderDocument&#39;,
+                            version: &#39;1.0&#39;,
+                            token: &#34;token&#34;,
+                            document: require(&#39;./apl_memolist.json&#39;),
+                            datasources: {
+                                &#34;MemoSkill&#34;: {
+                                    &#34;memoList&#34;: items
+                                }
+                            }
+                        })            
+                        .getResponse();
+                }
+            }
+        } 
+        
+    }
+};
+
+// メモする言葉を取得完了
+const MemoCompletedHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;MainIntent&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.dialogState === &#39;IN_PROGRESS&#39;;
+    },
+    async handle(handlerInput) {
+        const intent = handlerInput.requestEnvelope.request.intent;
+        const memoVal = intent.slots.any.value;
+        const speechText = `「${memoVal}」とメモしたよ`;
+        const uuid = getUniqueStr();
+        const attributesManager = handlerInput.attributesManager;
+        const s3Attributes = await attributesManager.getPersistentAttributes() || {};
+        const memoList = s3Attributes.hasOwnProperty(&#39;memoList&#39;)? s3Attributes.memoList : [];
+        
+        let memoData = {
+            &#34;uuid&#34;: uuid,
+            &#34;memo&#34;: memoVal
+        };
+        memoList.push(memoData);
+        
+        const sendData = {
+            &#34;memoList&#34;: memoList
+        }
+        attributesManager.setPersistentAttributes(sendData);
+        await attributesManager.savePersistentAttributes();
+    
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+        
+    }
+};
+
+// UUID作成
+function getUniqueStr(myStrong){
+    var strong = 1000;
+    if (myStrong) strong = myStrong;
+    return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16);
+}
+
+// ヘルプ
+const HelpIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.HelpIntent&#39;;
+    },
+    handle(handlerInput) {
+        const speechText = &#39;メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。それではどうぞ！&#39;;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// キャンセルor終了と発話された
+const CancelAndStopIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; (handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.CancelIntent&#39;
+                || handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.StopIntent&#39;);
+    },
+    handle(handlerInput) {
+        const speechText = &#39;バイバイ！またね！&#39;;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .getResponse();
+    }
+};
+
+// セッション切れ
+const SessionEndedRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;SessionEndedRequest&#39;;
+    },
+    handle(handlerInput) {
+        // Any cleanup logic goes here.
+        return handlerInput.responseBuilder.getResponse();
+    }
+};
+
+// エラー時
+const ErrorHandler = {
+    canHandle() {
+        return true;
+    },
+    handle(handlerInput, error) {
+        console.log(`~~~~ Error handled: ${error.message}`);
+        const speechText = `不明なエラーが出ました`;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// 各種Handlerを登録する
+exports.handler = skillBuilder
+    .addRequestHandlers(
+        LaunchRequestHandler,
+        HelpIntentHandler,
+        MainIntentHandler,
+        MemoCompletedHandler,
+        CancelAndStopIntentHandler,
+        SessionEndedRequestHandler)
+    .addErrorHandlers(
+        ErrorHandler)
+    .lambda();
+
+</code></pre>
+<p>［Save］と［Deploy］ボタンを押し忘れないようにしましょう。</p>
+<p><img alt="s123" src="img/cec20204647f68fa.png"></p>
+<h2>4-3. シミュレーターで確認しよう！</h2>
+<p>APL対応できたかをシミュレーターで確認しましょう。テストタブをクリックして、スキルを起動します。</p>
+<p><img alt="s124" src="img/baa23aa03ec49159.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="タッチに反応させよう！" duration="0">
+        <p>画面タッチして反応するようにしましょう。今回はスキル初回起動時にSAVEボタンとLOADボタンを設置して、押されたボタンに応じて処理を変更します。</p>
+<h2>5-1. トップ画面を作る</h2>
+<p>スキル起動直後に表示するトップ画面です。<br><br>単純にSAVEとLOADボタンが設置してあるだけです。</p>
+<p>では、APLファイルを新規作成します。コードエディタタブをクリックして、新規ファイル作成します。</p>
+<p><img alt="s130" src="img/fa42407b849444c6.png"></p>
+<p><code>apl_top.json</code>でファイルを作成します。</p>
+<p><img alt="s131" src="img/1bef8145e7966e4d.png"></p>
+<p>apl_top.jsonの中身は下記をコピペしてください。</p>
+<pre><code>{
+    &#34;type&#34;: &#34;APL&#34;,
+    &#34;version&#34;: &#34;1.0&#34;,
+    &#34;theme&#34;: &#34;dark&#34;,
+    &#34;import&#34;: [],
+    &#34;resources&#34;: [],
+    &#34;styles&#34;: {},
+    &#34;layouts&#34;: {},
+    &#34;mainTemplate&#34;: {
+        &#34;parameters&#34;: [
+            &#34;payload&#34;
+        ],
+        &#34;items&#34;: [
+            {
+                &#34;type&#34;: &#34;Container&#34;,
+                &#34;direction&#34;: &#34;column&#34;,
+                &#34;item&#34;: [
+                    {
+                        &#34;type&#34;: &#34;Text&#34;,
+                        &#34;textAlign&#34;: &#34;center&#34;,
+                        &#34;paddingTop&#34;: &#34;15vh&#34;,
+                        &#34;text&#34;: &#34;メニュー選択&#34;
+                    },
+                    {
+                        &#34;type&#34;: &#34;Container&#34;,
+                        &#34;direction&#34;: &#34;row&#34;,
+                        &#34;alignItems&#34;: &#34;center&#34;,
+                        &#34;justifyContent&#34;: &#34;center&#34;,
+                        &#34;width&#34;: &#34;100vw&#34;,
+                        &#34;height&#34;: &#34;50vh&#34;,
+                        &#34;paddingTop&#34;: &#34;10vh&#34;,
+                        &#34;items&#34;: [
+                            {
+                                &#34;type&#34;: &#34;Container&#34;,
+                                &#34;paddingRight&#34;: &#34;5vw&#34;,
+                                &#34;item&#34;: [
+                                    {
+                                        &#34;type&#34;: &#34;TouchWrapper&#34;,
+                                        &#34;onPress&#34;: {
+                                            &#34;type&#34;: &#34;SendEvent&#34;,
+                                            &#34;arguments&#34;: [
+                                                &#34;save&#34;
+                                            ]
+                                        },
+                                        &#34;item&#34;: [
+                                            {
+                                                &#34;type&#34;: &#34;Frame&#34;,
+                                                &#34;borderRadius&#34;: 10,
+                                                &#34;backgroundColor&#34;: &#34;blue&#34;,
+                                                &#34;item&#34;: [
+                                                    {
+                                                        &#34;type&#34;: &#34;Text&#34;,
+                                                        &#34;text&#34;: &#34;SAVE&#34;,
+                                                        &#34;width&#34;: &#34;30vw&#34;,
+                                                        &#34;height&#34;: &#34;20vh&#34;,
+                                                        &#34;textAlign&#34;: &#34;center&#34;,
+                                                        &#34;textAlignVertical&#34;: &#34;center&#34;
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                &#34;type&#34;: &#34;Container&#34;,
+                                &#34;paddingLeft&#34;: &#34;5vw&#34;,
+                                &#34;item&#34;: [
+                                    {
+                                        &#34;type&#34;: &#34;TouchWrapper&#34;,
+                                        &#34;onPress&#34;: {
+                                            &#34;type&#34;: &#34;SendEvent&#34;,
+                                            &#34;arguments&#34;: [
+                                                &#34;load&#34;
+                                            ]
+                                        },
+                                        &#34;item&#34;: [
+                                            {
+                                                &#34;type&#34;: &#34;Frame&#34;,
+                                                &#34;borderRadius&#34;: 10,
+                                                &#34;backgroundColor&#34;: &#34;green&#34;,
+                                                &#34;item&#34;: [
+                                                    {
+                                                        &#34;type&#34;: &#34;Text&#34;,
+                                                        &#34;text&#34;: &#34;LOAD&#34;,
+                                                        &#34;width&#34;: &#34;30vw&#34;,
+                                                        &#34;height&#34;: &#34;20vh&#34;,
+                                                        &#34;textAlign&#34;: &#34;center&#34;,
+                                                        &#34;textAlignVertical&#34;: &#34;center&#34;
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        &#34;type&#34;: &#34;Text&#34;,
+                        &#34;textAlign&#34;: &#34;center&#34;,
+                        &#34;fontSize&#34;: &#34;4vw&#34;,
+                        &#34;text&#34;: &#34;${payload.MemoSkill.hint}&#34;
+                    }
+                ]
+            }
+        ]
+    }
+}
+</code></pre>
+<p>APLオーサリングツールで見るとこのような画面になります。</p>
+<p><img alt="s132" src="img/207b06a912114d0f.png"></p>
+<h2>5-2. 使い手にわかりやすくする</h2>
+<p>今のままだとボタン押したあとに、SAVEとLOADボタンが表示されたままになります。<br><br>それを防ぐために画面を切り替えて、次に行ってもらう事を画面上に表示させます。</p>
+<p>新規ファイル作成してください。</p>
+<p><img alt="s133" src="img/c961d5bc20bad93e.png"></p>
+<p><code>apl_text.json</code>ファイルを作成します。</p>
+<p><img alt="s134" src="img/46469b970d4f6ad3.png"></p>
+<p>下記をコピペしてください。</p>
+<pre><code>{
+    &#34;type&#34;: &#34;APL&#34;,
+    &#34;version&#34;: &#34;1.0&#34;,
+    &#34;theme&#34;: &#34;dark&#34;,
+    &#34;import&#34;: [],
+    &#34;resources&#34;: [],
+    &#34;styles&#34;: {},
+    &#34;layouts&#34;: {},
+    &#34;mainTemplate&#34;: {
+        &#34;parameters&#34;: [
+            &#34;payload&#34;
+        ],
+        &#34;items&#34;: [
+            {
+                &#34;type&#34;: &#34;Container&#34;,
+                &#34;width&#34;: &#34;100vw&#34;,
+                &#34;height&#34;: &#34;100vh&#34;,
+                &#34;alignItems&#34;: &#34;center&#34;,
+                &#34;direction&#34;: &#34;column&#34;,
+                &#34;justifyContent&#34;: &#34;center&#34;,
+                &#34;item&#34;: [
+                    {
+                        &#34;type&#34;: &#34;Text&#34;,
+                        &#34;width&#34;: &#34;90vw&#34;,
+                        &#34;textAlign&#34;: &#34;center&#34;,
+                        &#34;fontSize&#34;: &#34;10vw&#34;,
+                        &#34;text&#34;: &#34;${payload.MemoSkill.word}&#34;
+                    }
+                ]
+            }
+        ]
+    }
+}
+</code></pre>
+<p>APLオーサリングツールで見るとこのような画面になります。<br><code>${payload.MemoSkill.word}</code>部分はプログラムで可変できるようにしています。</p>
+<p><img alt="s135" src="img/faa395f59c80c9f1.png"></p>
+<h2>5-3. APLを適用する</h2>
+<p>今まで作成したAPLを適用します。step3.jsの中身をコピペしてください。</p>
+<pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
+
+// 1. ask persistence adapterの読み込み
+const persistenceAdapter = require(&#39;ask-sdk-s3-persistence-adapter&#39;);
+
+// 2. スキルビルダーをアダプターを使用して初期化
+const skillBuilder = Alexa.SkillBuilders.custom().withPersistenceAdapter(
+    new persistenceAdapter.S3PersistenceAdapter({bucketName:process.env.S3_PERSISTENCE_BUCKET})
+);
+
+// スキル起動時
+const LaunchRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;LaunchRequest&#39;;
+    },
+    handle(handlerInput) {
+        const speechText = &#39;メニューをタップしてください。&#39;;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .addDirective({
+                type : &#39;Alexa.Presentation.APL.RenderDocument&#39;,
+                version: &#39;1.0&#39;,
+                token: &#34;token&#34;,
+                document: require(&#39;./apl_top.json&#39;),
+                datasources: {
+                    &#34;MemoSkill&#34;: {
+                        &#34;hint&#34;: &#34;メニューをタップしてください&#34;
+                    }
+                }
+            })            
+            .getResponse();
+    }
+};
+
+// 画面タッチ処理
+// シミュレーターではonPressが反応し、実機ではPressが反応するため2つ書いておく
+const TouchEventHandler = {
+    canHandle(handlerInput) {
+    return ((handlerInput.requestEnvelope.request.type === &#39;Alexa.Presentation.APL.UserEvent&#39; &amp;&amp;
+        (handlerInput.requestEnvelope.request.source.handler === &#39;Press&#39; || 
+        handlerInput.requestEnvelope.request.source.handler === &#39;onPress&#39;)));
+    },
+    async handle(handlerInput) {
+        // TcouhWrapperのargumentsで指定したパラメータを取得する
+        const choice = handlerInput.requestEnvelope.request.arguments[0];
+
+        if (choice === &#39;save&#39;) {
+            return handlerInput.responseBuilder
+                .speak(&#39;メモする言葉を言ってください。&#39;)
+                .addDirective({
+                    type : &#39;Alexa.Presentation.APL.RenderDocument&#39;,
+                    version: &#39;1.0&#39;,
+                    token: &#34;token&#34;,
+                    document: require(&#39;./apl_text.json&#39;),
+                    datasources: {
+                        &#34;MemoSkill&#34;: {
+                            &#34;word&#34;: &#34;「アレクサ、○○とメモして」と言ってください。&#34; 
+                        }
+                    }
+                })            
+                .getResponse();
+
+            
+        }
+            
+        // S3から保存しているメモを取得
+        const attributesManager = handlerInput.attributesManager;
+        const s3Attributes = await attributesManager.getPersistentAttributes() || {};
+        const items = s3Attributes.hasOwnProperty(&#39;memoList&#39;)? s3Attributes.memoList : [];
+        var speechText = &#39;&#39;;
+        var memoData = &#39;&#39;;
+        
+        if (items.length &gt; 0) {
+            items.forEach(function( value ) {
+                 memoData += `「${value.memo}」`;
+            });
+            speechText = `保存されているメモは${items.length}つあります。${memoData}です。`;    
+        }
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .addDirective({
+                type : &#39;Alexa.Presentation.APL.RenderDocument&#39;,
+                version: &#39;1.0&#39;,
+                token: &#34;token&#34;,
+                document: require(&#39;./apl_memolist.json&#39;),
+                datasources: {
+                    &#34;MemoSkill&#34;: {
+                        &#34;memoList&#34;: items
+                    }
+                }
+            })            
+            .getResponse();
+    }
+};
+
+// メモを保存or読み取り判別
+const MainIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;MainIntent&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.dialogState === &#39;STARTED&#39;;
+    },
+    async handle(handlerInput) {
+        const intent = handlerInput.requestEnvelope.request.intent;
+        const memoSlot = intent.slots.stat;
+        var modeVal = &#39;&#39;;
+        
+        if (memoSlot.value !== null) {
+            if (memoSlot.resolutions[&#34;resolutionsPerAuthority&#34;][0][&#34;status&#34;][&#34;code&#34;] === &#39;ER_SUCCESS_MATCH&#39;) {
+                modeVal = memoSlot.resolutions[&#34;resolutionsPerAuthority&#34;][0][&#34;values&#34;][0][&#34;value&#34;][&#34;name&#34;];
+                
+                if (modeVal === &#39;save&#39;) {
+                    // メモする内容を聞きに行く
+                    return handlerInput.responseBuilder.addDelegateDirective().getResponse();
+                } else {
+                    // S3から保存しているメモを取得
+                    const attributesManager = handlerInput.attributesManager;
+                    const s3Attributes = await attributesManager.getPersistentAttributes() || {};
+                    const items = s3Attributes.hasOwnProperty(&#39;memoList&#39;)? s3Attributes.memoList : [];
+                    var speechText = &#39;&#39;;
+                    var memoData = &#39;&#39;;
+                    
+                    if (items.length &gt; 0) {
+                        items.forEach(function( value ) {
+                             memoData += `「${value.memo}」`;
+                        });
+                        speechText = `保存されているメモは${items.length}つあります。${memoData}です。`;    
+                    }
+                    return handlerInput.responseBuilder
+                        .speak(speechText)
+                        .reprompt(speechText)
+                        .addDirective({
+                            type : &#39;Alexa.Presentation.APL.RenderDocument&#39;,
+                            version: &#39;1.0&#39;,
+                            token: &#34;token&#34;,
+                            document: require(&#39;./apl_memolist.json&#39;),
+                            datasources: {
+                                &#34;MemoSkill&#34;: {
+                                    &#34;memoList&#34;: items
+                                }
+                            }
+                        })            
+                        .getResponse();
+                }
+            }
+        } 
+        
+    }
+};
+
+// メモする言葉を取得完了
+const MemoCompletedHandler = {
+    canHandle(handlerInput) {
+        return (handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;MainIntent&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.dialogState === &#39;IN_PROGRESS&#39;) ||
+            (handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;SaveIntent&#39;);
+    },
+    async handle(handlerInput) {
+        const intent = handlerInput.requestEnvelope.request.intent;
+        const memoVal = intent.slots.any.value;
+        const speechText = `「${memoVal}」とメモしたよ`;
+        const uuid = getUniqueStr();
+        const attributesManager = handlerInput.attributesManager;
+        const s3Attributes = await attributesManager.getPersistentAttributes() || {};
+        const memoList = s3Attributes.hasOwnProperty(&#39;memoList&#39;)? s3Attributes.memoList : [];
+        
+        let memoData = {
+            &#34;uuid&#34;: uuid,
+            &#34;memo&#34;: memoVal
+        };
+        memoList.push(memoData);
+        
+        const sendData = {
+            &#34;memoList&#34;: memoList
+        }
+        attributesManager.setPersistentAttributes(sendData);
+        await attributesManager.savePersistentAttributes();
+    
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .addDirective({
+                type : &#39;Alexa.Presentation.APL.RenderDocument&#39;,
+                version: &#39;1.0&#39;,
+                token: &#34;token&#34;,
+                document: require(&#39;./apl_top.json&#39;),
+                datasources: {
+                    &#34;MemoSkill&#34;: {
+                        &#34;hint&#34;: speechText
+                    }
+                }
+            })            
+            .getResponse();
+        
+    }
+};
+
+// UUID作成
+function getUniqueStr(myStrong){
+    var strong = 1000;
+    if (myStrong) strong = myStrong;
+    return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16);
+}
+
+// ヘルプ
+const HelpIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.HelpIntent&#39;;
+    },
+    handle(handlerInput) {
+        const speechText = &#39;メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。それではどうぞ！&#39;;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// キャンセルor終了と発話された
+const CancelAndStopIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;IntentRequest&#39;
+            &amp;&amp; (handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.CancelIntent&#39;
+                || handlerInput.requestEnvelope.request.intent.name === &#39;AMAZON.StopIntent&#39;);
+    },
+    handle(handlerInput) {
+        const speechText = &#39;バイバイ！またね！&#39;;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .getResponse();
+    }
+};
+
+// セッション切れ
+const SessionEndedRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === &#39;SessionEndedRequest&#39;;
+    },
+    handle(handlerInput) {
+        // Any cleanup logic goes here.
+        return handlerInput.responseBuilder.getResponse();
+    }
+};
+
+// エラー時
+const ErrorHandler = {
+    canHandle() {
+        return true;
+    },
+    handle(handlerInput, error) {
+        console.log(`~~~~ Error handled: ${error.message}`);
+        const speechText = `不明なエラーが出ました`;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// 各種Handlerを登録する
+exports.handler = skillBuilder
+    .addRequestHandlers(
+        LaunchRequestHandler,
+        HelpIntentHandler,
+        MainIntentHandler,
+        MemoCompletedHandler,
+        TouchEventHandler,
+        CancelAndStopIntentHandler,
+        SessionEndedRequestHandler)
+    .addErrorHandlers(
+        ErrorHandler)
+    .lambda();
+
+</code></pre>
+<h2>5-4. メモ保存用Intentを作成する</h2>
+<p>APLからDialogモードを制御することができません。<br><br>専用のIntentを作成して、そのIntentを経由して実現します。</p>
+<p>ビルドタブをクリックして、インテント側にある［追加］ボタンをクリックします。</p>
+<p><img alt="s140" src="img/7f278074d9235940.png"></p>
+<p>自由テキストを手に入れるために変数名<code>any</code>を指定して、<code>AMAZON.SearchQuery</code>を選択します。<br><br>サンプル発話に3種類ほど登録してから、［保存］［ビルド］を実行します。</p>
+<p><img alt="s141" src="img/4dc70b5d92951558.png"></p>
+<h2>5-5. シミュレーターで確認する</h2>
+<p>テストタブをクリックして、シミュレーター画面に遷移してください。<br><br>スキルを起動するとSAVEとLOADボタンが表示されるので、SAVEボタンをクリックして動作確認してみましょう。</p>
+<p><img alt="s142" src="img/1a8527bd3b1ada8f.png"></p>
+<h2>5-6. まとめ</h2>
+<p>APLを使えば簡単に画面対応することができます。アイデア次第で様々なスキルを開発することができるので、どんどんAPLを使っていきましょう！</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-49880327-14', 'auto');
+
+    (function() {
+      var gaCodelab = '';
+      if (gaCodelab) {
+        ga('create', gaCodelab, 'auto', {name: 'codelab'});
+      }
+
+      var gaView;
+      var parts = location.search.substring(1).split('&');
+      for (var i = 0; i < parts.length; i++) {
+        var param = parts[i].split('=');
+        if (param[0] === 'viewga') {
+          gaView = param[1];
+          break;
+        }
+      }
+      if (gaView && gaView !== gaCodelab) {
+        ga('create', gaView, 'auto', {name: 'view'});
+      }
+    })();
+  </script>
+
+</body>
+</html>

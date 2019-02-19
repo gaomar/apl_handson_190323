@@ -1,0 +1,79 @@
+{
+    "type": "APL",
+    "version": "1.0",
+    "theme": "dark",
+    "import": [
+        {
+            "name": "alexa-layouts",
+            "version": "1.0.0"
+        }
+    ],
+    "resources": [],
+    "styles": {},
+    "layouts": {
+        "MemoList": {
+            "parameters": [
+                "listData"
+            ],
+            "item": {
+                "type": "Container",
+                "width": "100vw",
+                "height": "100vh",
+                "direction": "column",
+                "item": {
+                    "type": "Sequence",
+                    "grow": 1,
+                    "height": "80vh",
+                    "scrollDirection": "vertical",
+                    "paddingLeft": "@marginLeft",
+                    "paddingRight": "@marginRight",
+                    "data": "${listData}",
+                    "numbered": true,
+                    "items": {
+                        "type": "VerticalListItem",
+                        "primaryText": "${data.memo}"
+                    }
+                }
+            }
+        },
+        "VerticalListItem": {
+            "parameters": [
+                "primaryText"
+            ],
+            "item": {
+                "type": "Container",
+                "direction": "row",
+                "height": 125,
+                "width": "100%",
+                "alignItems": "center",
+                "separator": true,
+                "items": [
+                    {
+                        "type": "Text",
+                        "text": "${ordinal}",
+                        "color": "white",
+                        "spacing": "5dp"
+                    },
+                    {
+                        "type": "Text",
+                        "text": "${primaryText}",
+                        "color": "white",
+                        "width": "100vw",
+                        "spacing": "5vw"
+                    }
+                ]
+            }
+        }
+    },
+    "mainTemplate": {
+        "parameters": [
+            "payload"
+        ],
+        "items": [
+            {
+                "type": "MemoList",
+                "listData": "${payload.MemoSkill.memoList}"
+            }
+        ]
+    }
+}

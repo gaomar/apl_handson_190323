@@ -1,0 +1,109 @@
+{
+    "type": "APL",
+    "version": "1.0",
+    "theme": "dark",
+    "import": [],
+    "resources": [],
+    "styles": {},
+    "layouts": {},
+    "mainTemplate": {
+        "parameters": [
+            "payload"
+        ],
+        "items": [
+            {
+                "type": "Container",
+                "direction": "column",
+                "item": [
+                    {
+                        "type": "Text",
+                        "textAlign": "center",
+                        "paddingTop": "15vh",
+                        "text": "メニュー選択"
+                    },
+                    {
+                        "type": "Container",
+                        "direction": "row",
+                        "alignItems": "center",
+                        "justifyContent": "center",
+                        "width": "100vw",
+                        "height": "50vh",
+                        "paddingTop": "10vh",
+                        "items": [
+                            {
+                                "type": "Container",
+                                "paddingRight": "5vw",
+                                "item": [
+                                    {
+                                        "type": "TouchWrapper",
+                                        "onPress": {
+                                            "type": "SendEvent",
+                                            "arguments": [
+                                                "save"
+                                            ]
+                                        },
+                                        "item": [
+                                            {
+                                                "type": "Frame",
+                                                "borderRadius": 10,
+                                                "backgroundColor": "blue",
+                                                "item": [
+                                                    {
+                                                        "type": "Text",
+                                                        "text": "SAVE",
+                                                        "width": "30vw",
+                                                        "height": "20vh",
+                                                        "textAlign": "center",
+                                                        "textAlignVertical": "center"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "paddingLeft": "5vw",
+                                "item": [
+                                    {
+                                        "type": "TouchWrapper",
+                                        "onPress": {
+                                            "type": "SendEvent",
+                                            "arguments": [
+                                                "load"
+                                            ]
+                                        },
+                                        "item": [
+                                            {
+                                                "type": "Frame",
+                                                "borderRadius": 10,
+                                                "backgroundColor": "green",
+                                                "item": [
+                                                    {
+                                                        "type": "Text",
+                                                        "text": "LOAD",
+                                                        "width": "30vw",
+                                                        "height": "20vh",
+                                                        "textAlign": "center",
+                                                        "textAlignVertical": "center"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Text",
+                        "textAlign": "center",
+                        "fontSize": "4vw",
+                        "text": "${payload.MemoSkill.hint}"
+                    }
+                ]
+            }
+        ]
+    }
+}
