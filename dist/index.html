@@ -98,7 +98,7 @@
 <h2>3-2. index.jsファイルを編集する</h2>
 <p>プログラムの中身を編集します。<code>index.js</code>ファイルを開きます。</p>
 <p><img alt="s116" src="img/dbb0f2745f2acdfe.png"></p>
-<p>ファイルは下記からコピーしてください。</p>
+<p>ファイルは下記からコピーしてください。<br><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step1.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step1.js</a></p>
 <pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
 
 // 1. ask persistence adapterの読み込み
@@ -303,6 +303,7 @@ exports.handler = skillBuilder
 <p><code>apl_memolist.json</code>という名前でファイルを作成しましょう。［Create File］ボタンをクリックします。</p>
 <p><img alt="s121" src="img/a190bd77567c6459.png"></p>
 <p>入力する内容はこちらです。</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_memolist.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_memolist.json</a></p>
 <pre><code>{
     &#34;type&#34;: &#34;APL&#34;,
     &#34;version&#34;: &#34;1.0&#34;,
@@ -388,6 +389,7 @@ exports.handler = skillBuilder
 <h2>4-2. APLを適用しよう！</h2>
 <p>先程作成したjsonファイルをプログラムに適用します。<br><br>index.jsファイルを書き換えます。</p>
 <p>61行目にある<code>addDirective</code>のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js</a></p>
 <pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
 
 // 1. ask persistence adapterの読み込み
@@ -600,6 +602,7 @@ exports.handler = skillBuilder
 <p><code>apl_top.json</code>でファイルを作成します。</p>
 <p><img alt="s131" src="img/1bef8145e7966e4d.png"></p>
 <p>apl_top.jsonの中身は下記をコピペしてください。</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_top.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_top.json</a></p>
 <pre><code>{
     &#34;type&#34;: &#34;APL&#34;,
     &#34;version&#34;: &#34;1.0&#34;,
@@ -719,6 +722,7 @@ exports.handler = skillBuilder
 <p><code>apl_text.json</code>ファイルを作成します。</p>
 <p><img alt="s134" src="img/46469b970d4f6ad3.png"></p>
 <p>下記をコピペしてください。</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_text.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_text.json</a></p>
 <pre><code>{
     &#34;type&#34;: &#34;APL&#34;,
     &#34;version&#34;: &#34;1.0&#34;,
@@ -757,6 +761,7 @@ exports.handler = skillBuilder
 <p><img alt="s135" src="img/faa395f59c80c9f1.png"></p>
 <h2>5-3. APLを適用する</h2>
 <p>今まで作成したAPLを適用します。step3.jsの中身をコピペしてください。</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step3.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step3.js</a></p>
 <pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
 
 // 1. ask persistence adapterの読み込み

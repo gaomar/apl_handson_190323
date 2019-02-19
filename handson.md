@@ -125,7 +125,7 @@ S3のnpm依存関係を追加します。
 ![s116](images/s116.png)
 
 ファイルは下記からコピーしてください。
-
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step1.js](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step1.js)
 
 ```javascript:index.js
 const Alexa = require('ask-sdk-core');
@@ -344,6 +344,8 @@ Alexa-hostedを使えば、簡単にファイルを作成することができ�
 
 入力する内容はこちらです。
 
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_memolist.json](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_memolist.json)
+
 ```javascript:apl_memolist.json
 {
     "type": "APL",
@@ -435,6 +437,8 @@ Alexa-hostedを使えば、簡単にファイルを作成することができ�
 index.jsファイルを書き換えます。
 
 61行目にある`addDirective`のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。
+
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js)
 
 ```javascript:index.js
 const Alexa = require('ask-sdk-core');
@@ -658,6 +662,8 @@ APL対応できたかをシミュレーターで確認しましょう。テス�
 
 apl_top.jsonの中身は下記をコピペしてください。
 
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_top.json](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_top.json)
+
 ```javascript:apl_top.json
 {
     "type": "APL",
@@ -788,6 +794,8 @@ APLオーサリングツールで見るとこのような画面になります�
 
 下記をコピペしてください。
 
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_text.json](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_text.json)
+
 ```javascript:apl_text.json
 {
     "type": "APL",
@@ -831,6 +839,8 @@ APLオーサリングツールで見るとこのような画面になります�
 
 ### 5-3. APLを適用する
 今まで作成したAPLを適用します。step3.jsの中身をコピペしてください。
+
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step3.js](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step3.js)
 
 ```javascript:index.js
 const Alexa = require('ask-sdk-core');
