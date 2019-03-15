@@ -1,0 +1,176 @@
+{
+    "type": "APL",
+    "version": "1.0",
+    "theme": "dark",
+    "import": [
+        {
+            "name": "alexa-viewport-profiles",
+            "version": "1.0.0"
+        }
+    ],
+    "resources": [],
+    "styles": {},
+    "layouts": {},
+    "mainTemplate": {
+        "parameters": [
+            "payload"
+        ],
+        "items": [
+            {
+                "type": "Container",
+                "item": [
+                    {
+                        "type": "Container",
+                        "item": [
+                            {
+                                "type": "Frame",
+                                "backgroundColor": "#cabdb8",
+                                "height": "100vh"
+                            },
+                            {
+                                "type": "Image",
+                                "source": "https://s3-ap-northeast-1.amazonaws.com/gaomar-gengo-generator/gengo.png",
+                                "height": "100vh",
+                                "scale": "best-fill",
+                                "position": "absolute",
+                                "width": "100vw"
+                            },
+                            {
+                                "type": "Container",
+                                "when": "${@viewportProfile == @hubRoundSmall}",
+                                "position": "absolute",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "24vw",
+                                        "paddingTop": "46vh",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text1}",
+                                                "fontSize": "15vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "24vw",
+                                        "spacing": "-10",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text2}",
+                                                "fontSize": "15vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "when": "${@viewportProfile == @hubLandscapeMedium}",
+                                "position": "absolute",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "34.5vw",
+                                        "paddingTop": "46vh",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text1}",
+                                                "fontSize": "16vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "34.5vw",
+                                        "spacing": "-20",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text2}",
+                                                "fontSize": "16vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "when": "${@viewportProfile == @hubLandscapeLarge}",
+                                "position": "absolute",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "33vw",
+                                        "paddingTop": "45vh",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text1}",
+                                                "fontSize": "17vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "33vw",
+                                        "spacing": "-30",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text2}",
+                                                "fontSize": "17vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "when": "${@viewportProfile == @tvLandscapeXLarge}",
+                                "position": "absolute",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "35vw",
+                                        "paddingTop": "45vh",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text1}",
+                                                "fontSize": "16vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": "35vw",
+                                        "spacing": "-22",
+                                        "item": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${payload.skilldata.text2}",
+                                                "fontSize": "16vh",
+                                                "color": "black"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
