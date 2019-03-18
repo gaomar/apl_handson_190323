@@ -1050,7 +1050,56 @@ exports.handler = skillBuilder
 <h2>5-5. シミュレーターで確認する</h2>
 <p>テストタブをクリックして、シミュレーター画面に遷移してください。<br><br>スキルを起動するとSAVEとLOADボタンが表示されるので、SAVEボタンをクリックして動作確認してみましょう。</p>
 <p><img alt="s142" src="img/1a8527bd3b1ada8f.png"></p>
-<h2>5-6. まとめ</h2>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="元号ジェネレーターを作ってみよう" duration="0">
+        <p>余力がある方は既にAlexaストアで公開している元号ジェネレーターを作ってみましょう。<br>このスキルは今までに使われた元号の漢字からランダムで2文字生成して背景画像と合成します。</p>
+<p><a href="https://www.amazon.co.jp/gp/product/B07PF7PQXT" target="_blank">https://www.amazon.co.jp/gp/product/B07PF7PQXT</a></p>
+<h2>6-1. 新規スキルを作成</h2>
+<p>新しいスキルを作成するので、［スキルの作成］ボタンをクリックします。</p>
+<p><img alt="s150" src="img/e950a4833d4ca8f6.png"></p>
+<p>スキル名に「元号ツール」モデルは<code>カスタム</code>、ホスティング方法を<code>Alexaがホスト</code>をそれぞれ選択して、右上の［スキルを作成］ボタンをクリックします。</p>
+<p><img alt="s151" src="img/79449c22d6834e3e.png"></p>
+<p>画面が切り替わったら、左メニューにある<code>インターフェース</code>をクリックします。<br><code>Displayインターフェース</code>と<code>APL</code>をそれぞれ有効にします。<br>有効にしたら、ビルドと保存ボタンをクリックします。</p>
+<p><img alt="s152" src="img/5251db871b18e194.png"></p>
+<h2>6-2. コードを編集する</h2>
+<p><code>コ</code>ードエディタタブをクリックします。<code>index.js</code>をクリックしてコードを編集します。<br>下記URLからコードをコピペしてください。</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js</a></p>
+<p><img alt="s153" src="img/db7313e52007c8d0.png"></p>
+<h2>6-3. APLファイルを新規作成</h2>
+<p><code>lambda</code>フォルダを選択して左上にある新規ファイル作成ボタンをクリックします。</p>
+<p><img alt="s154" src="img/37ec6641ca7dfc09.png"></p>
+<p>ファイル名は<code>apl_gengo.json</code>としてください。</p>
+<p><img alt="s155" src="img/15817f84e85dd049.png"></p>
+<p>apl_gengo.jsonファイルを編集します。下記URLからコードをコピペしてください。</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_gengo.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_gengo.json</a></p>
+<p><img alt="s156" src="img/eaca39647d6cc993.png"></p>
+<h2>6-4. シミュレーターで確認する</h2>
+<p>テストタブをクリックしてシミュレーターでテストしてみましょう。<br>プルダウンメニューから<code>開発中</code>を選択します。</p>
+<p>「元号ツールをひらいて」と入力するとスキルを実行することができます。</p>
+<p><img alt="s157" src="img/8bbe0727f0388450.png"></p>
+<h2>6-5. Alexa-hostedのS3から画像を呼ぶ</h2>
+<p>Alexa-hostedにはS3も使えます。<br>コードエディタの左下にS3のリンクがあるのでクリックします。</p>
+<p><img alt="s158" src="img/f08c88e0adafc937.png"></p>
+<p>こちらの<code>gengo.png</code>画像を一度ローカルPCにダウンロードします。</p>
+<p><a href="https://github.com/gaomar/apl_handson_190323/raw/master/files/gengo.png" target="_blank">https://github.com/gaomar/apl_handson_190323/raw/master/files/gengo.png</a></p>
+<p>S3のページが表示されたら、画像をアップロードするので［アップロード］ボタンを押します。</p>
+<p><img alt="s159" src="img/84cc01812a7cba8e.png"></p>
+<p>先程ダウンロードした<code>gengo.png</code>ファイルを指定して。アップロードボタンをクリックします。</p>
+<p><img alt="s160" src="img/abe7f8517862f278.png"></p>
+<p>Alexa Developer Consoleに戻って、<code>apl_gengo.json</code>ファイルを編集します。<br>32行目を下記に書き換えます。保存ボタンを忘れずにクリックします。</p>
+<pre><code>&#34;source&#34;: &#34;${payload.skilldata.backgroundUrl}&#34;,
+</code></pre>
+<p><img alt="s161" src="img/adc640031d3bf358.png"></p>
+<p>続いて<code>index.js</code>ファイルも書き換えます。<br>step5.jsの内容をコピペします。保存とデプロイを忘れずにしましょう！</p>
+<p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step5.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step5.js</a></p>
+<p>2行目でutil.jsファイルを指定してS3から取得する関数を呼び出します。<br>27行目でS3に保存されているファイル名を指定して、一時アクセス可能なURLを取得します。<br>56行目でAPLに画像URLを指定します。</p>
+<p><img alt="s162" src="img/ed2d302fcbafb703.png"></p>
+<h2>6-6. シミュレーターで確認</h2>
+<p>これでスキルをテストするとS3から画像を呼び出していることが確認できると思います。</p>
+<h2>6-7. まとめ</h2>
 <p>APLを使えば簡単に画面対応することができます。アイデア次第で様々なスキルを開発することができるので、どんどんAPLを使っていきましょう！</p>
 
 

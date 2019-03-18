@@ -1142,5 +1142,98 @@ APLからDialogモードを制御することができません。
 
 ![s142](images/s142.png)
 
-### 5-6. まとめ
+## 元号ジェネレーターを作ってみよう
+余力がある方は既にAlexaストアで公開している元号ジェネレーターを作ってみましょう。
+このスキルは今までに使われた元号の漢字からランダムで2文字生成して背景画像と合成します。
+
+[https://www.amazon.co.jp/gp/product/B07PF7PQXT](https://www.amazon.co.jp/gp/product/B07PF7PQXT)
+
+### 6-1. 新規スキルを作成
+新しいスキルを作成するので、［スキルの作成］ボタンをクリックします。
+
+![s150](images/s150.png)
+
+スキル名に「元号ツール」モデルは`カスタム`、ホスティング方法を`Alexaがホスト`をそれぞれ選択して、右上の［スキルを作成］ボタンをクリックします。
+
+![s151](images/s151.png)
+
+画面が切り替わったら、左メニューにある`インターフェース`をクリックします。
+`Displayインターフェース`と`APL`をそれぞれ有効にします。
+有効にしたら、ビルドと保存ボタンをクリックします。
+
+![s152](images/s152.png)
+
+### 6-2. コードを編集する
+`コードエディタ`タブをクリックします。`index.js`をクリックしてコードを編集します。
+下記URLからコードをコピペしてください。
+
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js)
+
+![s153](images/s153.png)
+
+### 6-3. APLファイルを新規作成
+`lambda`フォルダを選択して左上にある新規ファイル作成ボタンをクリックします。
+
+![s154](images/s154.png)
+
+ファイル名は`apl_gengo.json`としてください。
+
+![s155](images/s155.png)
+
+apl_gengo.jsonファイルを編集します。下記URLからコードをコピペしてください。
+
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_gengo.json](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_gengo.json)
+
+![s156](images/s156.png)
+
+### 6-4. シミュレーターで確認する
+テストタブをクリックしてシミュレーターでテストしてみましょう。
+プルダウンメニューから`開発中`を選択します。
+
+「元号ツールをひらいて」と入力するとスキルを実行することができます。
+
+![s157](images/s157.png)
+
+### 6-5. Alexa-hostedのS3から画像を呼ぶ
+Alexa-hostedにはS3も使えます。
+コードエディタの左下にS3のリンクがあるのでクリックします。
+
+![s158](images/s158.png)
+
+こちらの`gengo.png`画像を一度ローカルPCにダウンロードします。
+
+[https://github.com/gaomar/apl_handson_190323/raw/master/files/gengo.png](https://github.com/gaomar/apl_handson_190323/raw/master/files/gengo.png)
+
+S3のページが表示されたら、画像をアップロードするので［アップロード］ボタンを押します。
+
+![s159](images/s159.png)
+
+先程ダウンロードした`gengo.png`ファイルを指定して。アップロードボタンをクリックします。
+
+![s160](images/s160.png)
+
+Alexa Developer Consoleに戻って、`apl_gengo.json`ファイルを編集します。
+32行目を下記に書き換えます。保存ボタンを忘れずにクリックします。
+
+```
+"source": "${payload.skilldata.backgroundUrl}",
+```
+
+![s161](images/s161.png)
+
+続いて`index.js`ファイルも書き換えます。
+step5.jsの内容をコピペします。保存とデプロイを忘れずにしましょう！
+
+[https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step5.js](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step5.js)
+
+2行目でutil.jsファイルを指定してS3から取得する関数を呼び出します。
+27行目でS3に保存されているファイル名を指定して、一時アクセス可能なURLを取得します。
+56行目でAPLに画像URLを指定します。
+
+![s162](images/s162.png)
+
+### 6-6. シミュレーターで確認
+これでスキルをテストするとS3から画像を呼び出していることが確認できると思います。
+
+### 6-7. まとめ
 APLを使えば簡単に画面対応することができます。アイデア次第で様々なスキルを開発することができるので、どんどんAPLを使っていきましょう！
