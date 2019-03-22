@@ -335,7 +335,16 @@ exports.handler = skillBuilder
 ## APL対応しよう！
 Duration: 7:00
 
-### 4-1. APLファイルを作成しよう！
+### 4-1. APLを有効にしよう
+Amazon Developer Consoleのビルドタブをクリックします。
+左メニューにある`インターフェース`をクリックします。
+`Displayインターフェース`と`Alexa Presentation Language`のチェックを有効にしましょう。
+
+これでAPLの設定が有効になりました。
+
+![s1400](images/s1400.png)
+
+### 4-2. APLファイルを作成しよう！
 APLの画面レイアウトを作成するために、ファイルを新規で作成します。  
 Alexa-hostedを使えば、簡単にファイルを作成することができます。
 
@@ -437,7 +446,7 @@ Alexa-hostedを使えば、簡単にファイルを作成することができ�
 
 ![s122](images/s122.png)
 
-### 4-2. APLを適用しよう！
+### 4-3. APLを適用しよう！
 先程作成したjsonファイルをプログラムに適用します。  
 index.jsファイルを書き換えます。
 
@@ -645,7 +654,7 @@ exports.handler = skillBuilder
 
 ![s123](images/s123.png)
 
-### 4-3. シミュレーターで確認しよう！
+### 4-4. シミュレーターで確認しよう！
 APL対応できたかをシミュレーターで確認しましょう。テストタブをクリックして、スキルを起動します。
 
 ![s124](images/s124.png)

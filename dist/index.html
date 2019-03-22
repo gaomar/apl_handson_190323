@@ -30,13 +30,13 @@
       <google-codelab-step label="プロジェクトを作成する" duration="1">
         <p>新規スキルのプロジェクトを作成します。こちらにアクセスしてください。<br><a href="https://developer.amazon.com/ja/alexa-skills-kit" target="_blank">https://developer.amazon.com/ja/alexa-skills-kit</a></p>
 <h2>1-1. スキル開発を始めよう！</h2>
-<p class="image-container">［スキル開発を始める］をクリックします。</p>
+<p>［スキル開発を始める］をクリックします。</p>
 <p class="image-container"><img alt="s100" src="img/b271f296a74176d1.png"></p>
-<p class="image-container">Amazonのアカウント情報を入力してログインします。</p>
+<p>Amazonのアカウント情報を入力してログインします。</p>
 <p class="image-container"><img alt="s101" src="img/2edc81633369d120.png"></p>
-<p class="image-container">［スキルの作成］ボタンをクリックします。</p>
+<p>［スキルの作成］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s102" src="img/8533ffd0f4d85bf8.png"></p>
-<p class="image-container">スキル名「メモスキル」を入力して、［カスタム］と［Alexaがホスト］をそれぞれ選択します。<br>最後に［スキルを作成］ボタンをクリックします。</p>
+<p>スキル名「メモスキル」を入力して、［カスタム］と［Alexaがホスト］をそれぞれ選択します。<br>最後に［スキルを作成］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s103" src="img/7f4eae6e08da59ca.png"></p>
 
 
@@ -44,30 +44,30 @@
     
       <google-codelab-step label="スロットとインテントを作成しよう！" duration="6">
         <h2>2-1. スロットを作成する</h2>
-<p class="image-container">メモをセーブとロードのスロットを作成します。左側メニューのスロットタイプにある［追加］ボタンをクリックします。</p>
-<p class="image-container">「MemoSlot」と入力して［カスタムスロットタイプを作成］ボタンをクリックします。</p>
+<p>メモをセーブとロードのスロットを作成します。左側メニューのスロットタイプにある［追加］ボタンをクリックします。</p>
+<p>「MemoSlot」と入力して［カスタムスロットタイプを作成］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s105" src="img/de790a037289952.png"></p>
-<p class="image-container">「メモをセーブ」や「メモをロード」という言葉に反応させたいので、セーブとロードをそれぞれ登録します。同義語にそれ以外の言葉も登録しておきます。</p>
+<p>「メモをセーブ」や「メモをロード」という言葉に反応させたいので、セーブとロードをそれぞれ登録します。同義語にそれ以外の言葉も登録しておきます。</p>
 <p class="image-container"><img alt="s106" src="img/d8ceaeeebab8dfce.png"></p>
 <h2>2-2. インテントを作成する</h2>
-<p class="image-container">MainIntentを作成します。左側メニューのインテントにある［追加］ボタンをクリックします。</p>
-<p class="image-container">「MainIntent」と入力して［カスタムインテントを作成］ボタンをクリックします。</p>
+<p>MainIntentを作成します。左側メニューのインテントにある［追加］ボタンをクリックします。</p>
+<p>「MainIntent」と入力して［カスタムインテントを作成］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s107" src="img/8b91e44ad351e7b6.png"></p>
-<p class="image-container">インテントスロットを追加します。<code>any</code>と入力して［＋］をクリックします。プルダウンメニューから<code>AMAZON.SearchQuery</code>を選択します。［ダイアログを編集］リンクをクリックします。</p>
+<p>インテントスロットを追加します。<code>any</code>と入力して［＋］をクリックします。プルダウンメニューから<code>AMAZON.SearchQuery</code>を選択します。［ダイアログを編集］リンクをクリックします。</p>
 <p class="image-container"><img alt="s108" src="img/96a17cd296f3cecf.png"></p>
-<p class="image-container">必須入力を有効化にします。Alexaの音声プロンプト部分に「メモする内容を言ってください。」と入力します。</p>
-<p class="image-container">ユーザー発話部分は<code>{any}</code>と入力します。ユーザーが発話したらanyに格納されます。</p>
+<p>必須入力を有効化にします。Alexaの音声プロンプト部分に「メモする内容を言ってください。」と入力します。</p>
+<p>ユーザー発話部分は<code>{any}</code>と入力します。ユーザーが発話したらanyに格納されます。</p>
 <p class="image-container"><img alt="s109" src="img/d718b8fadaaa7bb6.png"></p>
-<p class="image-container">MainIntent部分をクリックして、元の画面に戻ります。</p>
+<p>MainIntent部分をクリックして、元の画面に戻ります。</p>
 <p class="image-container"><img alt="s110" src="img/557d78ea3db870f0.png"></p>
-<p class="image-container">「オートデリゲートを無効化」をプルダウンメニューから選択します。</p>
+<p>「オートデリゲートを無効化」をプルダウンメニューから選択します。</p>
 <p class="image-container"><img alt="s111" src="img/e85fda01d5860de.png"></p>
-<p class="image-container">「stat」と入力して［＋］をクリックします。プルダウンメニューは先程作成した<code>MemoSlot</code>を選択します。</p>
+<p>「stat」と入力して［＋］をクリックします。プルダウンメニューは先程作成した<code>MemoSlot</code>を選択します。</p>
 <p class="image-container"><img alt="s112" src="img/b8ad8b1b577ebdec.png"></p>
-<p class="image-container">サンプル発話に考えられる文章を登録していきます。</p>
-<p class="image-container">これで「メモをセーブ」や「メモをロード」という言葉に反応できるようになりました。</p>
+<p>サンプル発話に考えられる文章を登録していきます。</p>
+<p>これで「メモをセーブ」や「メモをロード」という言葉に反応できるようになりました。</p>
 <p class="image-container"><img alt="s113" src="img/807f2085ad2da65c.png"></p>
-<p class="image-container">最後に必ず「保存」と「ビルド」を実行しておいてください。</p>
+<p>最後に必ず「保存」と「ビルド」を実行しておいてください。</p>
 <p class="image-container"><img alt="s114" src="img/79c3fd94fb287e5.png"></p>
 
 
@@ -75,8 +75,8 @@
     
       <google-codelab-step label="Alexa-hostedでスキルを作ろう" duration="6">
         <h2>3-1. S3にアクセスするプログラムを追加する</h2>
-<p class="image-container">コードエディタタブをクリックします。左側にあるファイルから<code>package.json</code>を開きます。</p>
-<p class="image-container">S3のnpm依存関係を追加します。</p>
+<p>コードエディタタブをクリックします。左側にあるファイルから<code>package.json</code>を開きます。</p>
+<p>S3のnpm依存関係を追加します。</p>
 <pre><code>&#34;ask-sdk-s3-persistence-adapter&#34;: &#34;^2.0.0&#34;
 </code></pre>
 <p class="image-container"><img alt="s115" src="img/a66c1eb28cae9887.png"></p>
@@ -99,7 +99,7 @@
 }
 </code></pre>
 <h2>3-2. index.jsファイルを編集する</h2>
-<p class="image-container">プログラムの中身を編集します。<code>index.js</code>ファイルを開きます。</p>
+<p>プログラムの中身を編集します。<code>index.js</code>ファイルを開きます。</p>
 <p class="image-container"><img alt="s116" src="img/dbb0f2745f2acdfe.png"></p>
 <p>ファイルは下記からコピーしてください。<br><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step1.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step1.js</a></p>
 <pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
@@ -286,26 +286,30 @@ exports.handler = skillBuilder
 
 </code></pre>
 <h2>3-3. スキルを実行しよう！</h2>
-<p class="image-container">デプロイが終わったらテストタブをクリックして、スキルをテストしてみましょう。</p>
-<p class="image-container">「開発中」に切り替えてから「メモスキルをひらいて」と入力します。</p>
+<p>デプロイが終わったらテストタブをクリックして、スキルをテストしてみましょう。</p>
+<p>「開発中」に切り替えてから「メモスキルをひらいて」と入力します。</p>
 <p class="image-container"><img alt="s117" src="img/5df746283e19ba42.png"></p>
 <h2>3-4. S3にあるファイルを確認しよう！</h2>
-<p class="image-container">コードエディタの左下にある<code>Media storage: S3 [0.0/5GB]</code>というリンクをクリックします。</p>
+<p>コードエディタの左下にある<code>Media storage: S3 [0.0/5GB]</code>というリンクをクリックします。</p>
 <p class="image-container"><img alt="s118" src="img/8c5325fc2e25fe4.png"></p>
-<p class="image-container">するとAWSのS3ページが開きます。そこにメモしたファイルが保存されているので、スキルを再起動してもメモをロードできるようになっています。</p>
+<p>するとAWSのS3ページが開きます。そこにメモしたファイルが保存されているので、スキルを再起動してもメモをロードできるようになっています。</p>
 <p class="image-container"><img alt="s119" src="img/f4ff7407ad560ec4.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="APL対応しよう！" duration="7">
-        <h2>4-1. APLファイルを作成しよう！</h2>
-<p class="image-container">APLの画面レイアウトを作成するために、ファイルを新規で作成します。<br><br>Alexa-hostedを使えば、簡単にファイルを作成することができます。</p>
-<p class="image-container"><code>コードエディタ</code>タブをクリックします。<code>lambda</code>フォルダを選択して、左上にある新規作成アイコンをクリックします。</p>
+        <h2>4-1. APLを有効にしよう</h2>
+<p>Amazon Developer Consoleのビルドタブをクリックします。<br>左メニューにある<code>インターフェース</code>をクリックします。<br><code>Displayインターフェース</code>と<code>Alexa Presentation Language</code>のチェックを有効にしましょう。</p>
+<p>これでAPLの設定が有効になりました。忘れずに保存とビルドをしておきましょう。</p>
+<p class="image-container"><img alt="s1400" src="img/d309c5423fb5dfee.png"></p>
+<h2>4-2. APLファイルを作成しよう！</h2>
+<p>APLの画面レイアウトを作成するために、ファイルを新規で作成します。<br><br>Alexa-hostedを使えば、簡単にファイルを作成することができます。</p>
+<p><code>コードエディタ</code>タブをクリックします。<code>lambda</code>フォルダを選択して、左上にある新規作成アイコンをクリックします。</p>
 <p class="image-container"><img alt="s120" src="img/48c53533f57833fb.png"></p>
-<p class="image-container"><code>apl_memolist.json</code>という名前でファイルを作成しましょう。［Create File］ボタンをクリックします。</p>
+<p><code>apl_memolist.json</code>という名前でファイルを作成しましょう。［Create File］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s121" src="img/a190bd77567c6459.png"></p>
-<p class="image-container">入力する内容はこちらです。</p>
+<p>入力する内容はこちらです。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_memolist.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_memolist.json</a></p>
 <pre><code>{
     &#34;type&#34;: &#34;APL&#34;,
@@ -387,11 +391,11 @@ exports.handler = skillBuilder
     }
 }
 </code></pre>
-<p class="image-container">ファイルを保存し忘れないようにしましょう。</p>
+<p>ファイルを保存し忘れないようにしましょう。</p>
 <p class="image-container"><img alt="s122" src="img/50bc29da340f99f7.png"></p>
-<h2>4-2. APLを適用しよう！</h2>
-<p class="image-container">先程作成したjsonファイルをプログラムに適用します。<br><br>index.jsファイルを書き換えます。</p>
-<p class="image-container">61行目にある<code>addDirective</code>のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。</p>
+<h2>4-3. APLを適用しよう！</h2>
+<p>先程作成したjsonファイルをプログラムに適用します。<br><br>index.jsファイルを書き換えます。</p>
+<p>61行目にある<code>addDirective</code>のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js</a></p>
 <pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
 
@@ -587,24 +591,24 @@ exports.handler = skillBuilder
     .lambda();
 
 </code></pre>
-<p class="image-container">［Save］と［Deploy］ボタンを押し忘れないようにしましょう。</p>
+<p>［Save］と［Deploy］ボタンを押し忘れないようにしましょう。</p>
 <p class="image-container"><img alt="s123" src="img/cec20204647f68fa.png"></p>
-<h2>4-3. シミュレーターで確認しよう！</h2>
-<p class="image-container">APL対応できたかをシミュレーターで確認しましょう。テストタブをクリックして、スキルを起動します。</p>
+<h2>4-4. シミュレーターで確認しよう！</h2>
+<p>APL対応できたかをシミュレーターで確認しましょう。テストタブをクリックして、スキルを起動します。</p>
 <p class="image-container"><img alt="s124" src="img/baa23aa03ec49159.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="タッチに反応させよう！" duration="6">
-        <p class="image-container">画面タッチして反応するようにしましょう。今回はスキル初回起動時にSAVEボタンとLOADボタンを設置して、押されたボタンに応じて処理を変更します。</p>
+        <p>画面タッチして反応するようにしましょう。今回はスキル初回起動時にSAVEボタンとLOADボタンを設置して、押されたボタンに応じて処理を変更します。</p>
 <h2>5-1. トップ画面を作る</h2>
-<p class="image-container">スキル起動直後に表示するトップ画面です。<br><br>単純にSAVEとLOADボタンが設置してあるだけです。</p>
-<p class="image-container">では、APLファイルを新規作成します。コードエディタタブをクリックして、新規ファイル作成します。</p>
+<p>スキル起動直後に表示するトップ画面です。<br><br>単純にSAVEとLOADボタンが設置してあるだけです。</p>
+<p>では、APLファイルを新規作成します。コードエディタタブをクリックして、新規ファイル作成します。</p>
 <p class="image-container"><img alt="s130" src="img/fa42407b849444c6.png"></p>
-<p class="image-container"><code>apl_top.json</code>でファイルを作成します。</p>
+<p><code>apl_top.json</code>でファイルを作成します。</p>
 <p class="image-container"><img alt="s131" src="img/1bef8145e7966e4d.png"></p>
-<p class="image-container">apl_top.jsonの中身は下記をコピペしてください。</p>
+<p>apl_top.jsonの中身は下記をコピペしてください。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_top.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_top.json</a></p>
 <pre><code>{
     &#34;type&#34;: &#34;APL&#34;,
@@ -716,15 +720,15 @@ exports.handler = skillBuilder
     }
 }
 </code></pre>
-<p class="image-container">APLオーサリングツールで見るとこのような画面になります。</p>
+<p>APLオーサリングツールで見るとこのような画面になります。</p>
 <p class="image-container"><img alt="s132" src="img/207b06a912114d0f.png"></p>
 <h2>5-2. 使い手にわかりやすくする</h2>
-<p class="image-container">今のままだとボタン押したあとに、SAVEとLOADボタンが表示されたままになります。<br><br>それを防ぐために画面を切り替えて、次に行ってもらう事を画面上に表示させます。</p>
-<p class="image-container">新規ファイル作成してください。</p>
+<p>今のままだとボタン押したあとに、SAVEとLOADボタンが表示されたままになります。<br><br>それを防ぐために画面を切り替えて、次に行ってもらう事を画面上に表示させます。</p>
+<p>新規ファイル作成してください。</p>
 <p class="image-container"><img alt="s133" src="img/c961d5bc20bad93e.png"></p>
-<p class="image-container"><code>apl_text.json</code>ファイルを作成します。</p>
+<p><code>apl_text.json</code>ファイルを作成します。</p>
 <p class="image-container"><img alt="s134" src="img/46469b970d4f6ad3.png"></p>
-<p class="image-container">下記をコピペしてください。</p>
+<p>下記をコピペしてください。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_text.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_text.json</a></p>
 <pre><code>{
     &#34;type&#34;: &#34;APL&#34;,
@@ -760,10 +764,10 @@ exports.handler = skillBuilder
     }
 }
 </code></pre>
-<p class="image-container">APLオーサリングツールで見るとこのような画面になります。<br><code>${payload.MemoSkill.word}</code>部分はプログラムで可変できるようにしています。</p>
+<p>APLオーサリングツールで見るとこのような画面になります。<br><code>${payload.MemoSkill.word}</code>部分はプログラムで可変できるようにしています。</p>
 <p class="image-container"><img alt="s135" src="img/faa395f59c80c9f1.png"></p>
 <h2>5-3. APLを適用する</h2>
-<p class="image-container">今まで作成したAPLを適用します。step3.jsの中身をコピペしてください。</p>
+<p>今まで作成したAPLを適用します。step3.jsの中身をコピペしてください。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step3.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step3.js</a></p>
 <pre><code>const Alexa = require(&#39;ask-sdk-core&#39;);
 
@@ -1045,65 +1049,65 @@ exports.handler = skillBuilder
 
 </code></pre>
 <h2>5-4. メモ保存用Intentを作成する</h2>
-<p class="image-container">APLからDialogモードを制御することができません。<br><br>専用のIntentを作成して、そのIntentを経由して実現します。</p>
-<p class="image-container">ビルドタブをクリックして、インテント側にある［追加］ボタンをクリックします。</p>
+<p>APLからDialogモードを制御することができません。<br><br>専用のIntentを作成して、そのIntentを経由して実現します。</p>
+<p>ビルドタブをクリックして、インテント側にある［追加］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s140" src="img/7f278074d9235940.png"></p>
-<p class="image-container">自由テキストを手に入れるために変数名<code>any</code>を指定して、<code>AMAZON.SearchQuery</code>を選択します。<br><br>サンプル発話に3種類ほど登録してから、［保存］［ビルド］を実行します。</p>
+<p>自由テキストを手に入れるために変数名<code>any</code>を指定して、<code>AMAZON.SearchQuery</code>を選択します。<br><br>サンプル発話に3種類ほど登録してから、［保存］［ビルド］を実行します。</p>
 <p class="image-container"><img alt="s141" src="img/4dc70b5d92951558.png"></p>
 <h2>5-5. シミュレーターで確認する</h2>
-<p class="image-container">テストタブをクリックして、シミュレーター画面に遷移してください。<br><br>スキルを起動するとSAVEとLOADボタンが表示されるので、SAVEボタンをクリックして動作確認してみましょう。</p>
+<p>テストタブをクリックして、シミュレーター画面に遷移してください。<br><br>スキルを起動するとSAVEとLOADボタンが表示されるので、SAVEボタンをクリックして動作確認してみましょう。</p>
 <p class="image-container"><img alt="s142" src="img/1a8527bd3b1ada8f.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="元号ジェネレーターを作ってみよう" duration="10">
-        <p class="image-container">余力がある方は既にAlexaストアで公開している元号ジェネレーターを作ってみましょう。<br>このスキルは今までに使われた元号の漢字からランダムで2文字生成して背景画像と合成します。</p>
+        <p>余力がある方は既にAlexaストアで公開している元号ジェネレーターを作ってみましょう。<br>このスキルは今までに使われた元号の漢字からランダムで2文字生成して背景画像と合成します。</p>
 <p><a href="https://www.amazon.co.jp/gp/product/B07PF7PQXT" target="_blank">https://www.amazon.co.jp/gp/product/B07PF7PQXT</a></p>
 <h2>6-1. 新規スキルを作成</h2>
-<p class="image-container">新しいスキルを作成するので、［スキルの作成］ボタンをクリックします。</p>
+<p>新しいスキルを作成するので、［スキルの作成］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s150" src="img/e950a4833d4ca8f6.png"></p>
-<p class="image-container">スキル名に「元号ツール」モデルは<code>カスタム</code>、ホスティング方法を<code>Alexaホスト</code>をそれぞれ選択して、右上の［スキルを作成］ボタンをクリックします。</p>
+<p>スキル名に「元号ツール」モデルは<code>カスタム</code>、ホスティング方法を<code>Alexaホスト</code>をそれぞれ選択して、右上の［スキルを作成］ボタンをクリックします。</p>
 <p class="image-container"><img alt="s151" src="img/79449c22d6834e3e.png"></p>
-<p class="image-container">画面が切り替わったら、左メニューにある<code>インターフェース</code>をクリックします。<br><code>Displayインターフェース</code>と<code>APL</code>をそれぞれ有効にします。<br>有効にしたら、ビルドと保存ボタンをクリックします。</p>
+<p>画面が切り替わったら、左メニューにある<code>インターフェース</code>をクリックします。<br><code>Displayインターフェース</code>と<code>APL</code>をそれぞれ有効にします。<br>有効にしたら、ビルドと保存ボタンをクリックします。</p>
 <p class="image-container"><img alt="s152" src="img/5251db871b18e194.png"></p>
 <h2>6-2. コードを編集する</h2>
-<p class="image-container"><code>コードエディタ</code>タブをクリックします。<code>index.js</code>をクリックしてコードを編集します。<br>下記URLからコードをコピペしてください。</p>
+<p><code>コ</code>ードエディタタブをクリックします。<code>index.js</code>をクリックしてコードを編集します。<br>下記URLからコードをコピペしてください。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js</a></p>
 <p class="image-container"><img alt="s153" src="img/db7313e52007c8d0.png"></p>
 <h2>6-3. APLファイルを新規作成</h2>
-<p class="image-container"><code>lambda</code>フォルダを選択して左上にある新規ファイル作成ボタンをクリックします。</p>
+<p><code>lambda</code>フォルダを選択して左上にある新規ファイル作成ボタンをクリックします。</p>
 <p class="image-container"><img alt="s154" src="img/37ec6641ca7dfc09.png"></p>
-<p class="image-container">ファイル名は<code>apl_gengo.json</code>としてください。</p>
+<p>ファイル名は<code>apl_gengo.json</code>としてください。</p>
 <p class="image-container"><img alt="s155" src="img/15817f84e85dd049.png"></p>
-<p class="image-container">apl_gengo.jsonファイルを編集します。下記URLからコードをコピペしてください。</p>
+<p>apl_gengo.jsonファイルを編集します。下記URLからコードをコピペしてください。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_gengo.json" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/apl_gengo.json</a></p>
 <p class="image-container"><img alt="s156" src="img/eaca39647d6cc993.png"></p>
 <h2>6-4. シミュレーターで確認する</h2>
-<p class="image-container">テストタブをクリックしてシミュレーターでテストしてみましょう。<br>プルダウンメニューから<code>開発中</code>を選択します。</p>
-<p class="image-container">「元号ツールをひらいて」と入力するとスキルを実行することができます。</p>
+<p>テストタブをクリックしてシミュレーターでテストしてみましょう。<br>プルダウンメニューから<code>開発中</code>を選択します。</p>
+<p>「元号ツールをひらいて」と入力するとスキルを実行することができます。</p>
 <p class="image-container"><img alt="s157" src="img/8bbe0727f0388450.png"></p>
 <h2>6-5. Alexa-hostedのS3から画像を呼ぶ</h2>
-<p class="image-container">Alexa-hostedにはS3も使えます。<br>コードエディタの左下にS3のリンクがあるのでクリックします。</p>
+<p>Alexa-hostedにはS3も使えます。<br>コードエディタの左下にS3のリンクがあるのでクリックします。</p>
 <p class="image-container"><img alt="s158" src="img/f08c88e0adafc937.png"></p>
-<p class="image-container">こちらの<code>gengo.png</code>画像を一度ローカルPCにダウンロードします。</p>
+<p>こちらの<code>gengo.png</code>画像を一度ローカルPCにダウンロードします。</p>
 <p><a href="https://github.com/gaomar/apl_handson_190323/raw/master/files/gengo.png" target="_blank">https://github.com/gaomar/apl_handson_190323/raw/master/files/gengo.png</a></p>
-<p class="image-container">S3のページが表示されたら、画像をアップロードするので［アップロード］ボタンを押します。</p>
+<p>S3のページが表示されたら、画像をアップロードするので［アップロード］ボタンを押します。</p>
 <p class="image-container"><img alt="s159" src="img/84cc01812a7cba8e.png"></p>
-<p class="image-container">先程ダウンロードした<code>gengo.png</code>ファイルを指定して。アップロードボタンをクリックします。</p>
+<p>先程ダウンロードした<code>gengo.png</code>ファイルを指定して。アップロードボタンをクリックします。</p>
 <p class="image-container"><img alt="s160" src="img/abe7f8517862f278.png"></p>
-<p class="image-container">Alexa Developer Consoleに戻って、<code>apl_gengo.json</code>ファイルを編集します。<br>32行目を下記に書き換えます。保存ボタンを忘れずにクリックします。</p>
+<p>Alexa Developer Consoleに戻って、<code>apl_gengo.json</code>ファイルを編集します。<br>32行目を下記に書き換えます。保存ボタンを忘れずにクリックします。</p>
 <pre><code>&#34;source&#34;: &#34;${payload.skilldata.backgroundUrl}&#34;,
 </code></pre>
 <p class="image-container"><img alt="s161" src="img/adc640031d3bf358.png"></p>
-<p class="image-container">続いて<code>index.js</code>ファイルも書き換えます。<br>step5.jsの内容をコピペします。保存とデプロイを忘れずにしましょう！</p>
+<p>続いて<code>index.js</code>ファイルも書き換えます。<br>step5.jsの内容をコピペします。保存とデプロイを忘れずにしましょう！</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step5.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step5.js</a></p>
-<p class="image-container">2行目でutil.jsファイルを指定してS3から取得する関数を呼び出します。<br>27行目でS3に保存されているファイル名を指定して、一時アクセス可能なURLを取得します。<br>56行目でAPLに画像URLを指定します。</p>
+<p>2行目でutil.jsファイルを指定してS3から取得する関数を呼び出します。<br>27行目でS3に保存されているファイル名を指定して、一時アクセス可能なURLを取得します。<br>56行目でAPLに画像URLを指定します。</p>
 <p class="image-container"><img alt="s162" src="img/ed2d302fcbafb703.png"></p>
 <h2>6-6. シミュレーターで確認</h2>
-<p class="image-container">これでスキルをテストするとS3から画像を呼び出していることが確認できると思います。</p>
+<p>これでスキルをテストするとS3から画像を呼び出していることが確認できると思います。</p>
 <h2>6-7. まとめ</h2>
-<p class="image-container">APLを使えば簡単に画面対応することができます。アイデア次第で様々なスキルを開発することができるので、どんどんAPLを使っていきましょう！</p>
+<p>APLを使えば簡単に画面対応することができます。アイデア次第で様々なスキルを開発することができるので、どんどんAPLを使っていきましょう！</p>
 
 
       </google-codelab-step>
