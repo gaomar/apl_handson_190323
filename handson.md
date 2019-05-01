@@ -95,9 +95,13 @@ Duration: 6:00
 ### 3-1. S3にアクセスするプログラムを追加する
 コードエディタタブをクリックします。左側にあるファイルから`package.json`を開きます。
 
-S3のnpm依存関係を追加します。
+ASK SDK Utilitiesが先日追加されたので、ask-sdkのバージョンを変更します。
+S3のnpm依存関係も追加しておきます。
 
 ```
+"ask-sdk-core": "^2.5.1",
+"ask-sdk-model": "^1.9.0",
+"aws-sdk": "^2.5.1",
 "ask-sdk-s3-persistence-adapter": "^2.0.0"
 ```
 
@@ -115,9 +119,9 @@ S3のnpm依存関係を追加します。
   "author": "Amazon Alexa",
   "license": "ISC",
   "dependencies": {
-    "ask-sdk-core": "^2.0.7",
-    "ask-sdk-model": "^1.4.1",
-    "aws-sdk": "^2.326.0",
+    "ask-sdk-core": "^2.5.1",         // バージョン変える
+    "ask-sdk-model": "^1.9.1",        // バージョン変える
+    "aws-sdk": "^2.5.1",              // バージョン変える
     "ask-sdk-s3-persistence-adapter": "^2.0.0"  // ←これを追加
   }
 }
@@ -145,7 +149,7 @@ const skillBuilder = Alexa.SkillBuilders.custom().withPersistenceAdapter(
 // スキル起動時
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
         const speechText = 'メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。';
@@ -159,18 +163,17 @@ const LaunchRequestHandler = {
 // メモを保存or読み取り判別
 const MainIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'STARTED';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'STARTED';
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoSlot = intent.slots.stat;
+        const memoSlot = Alexa.getSlot(handlerInput.requestEnvelope, "stat");
         var modeVal = '';
         
         if (memoSlot.value !== null) {
-            if (memoSlot.resolutions["resolutionsPerAuthority"][0]["status"]["code"] === 'ER_SUCCESS_MATCH') {
-                modeVal = memoSlot.resolutions["resolutionsPerAuthority"][0]["values"][0]["value"]["name"];
+            if (memoSlot.resolutions.resolutionsPerAuthority[0].status.code === 'ER_SUCCESS_MATCH') {
+                modeVal = memoSlot.resolutions.resolutionsPerAuthority[0].values[0].value.name;
                 
                 if (modeVal === 'save') {
                     // メモする内容を聞きに行く
@@ -203,13 +206,12 @@ const MainIntentHandler = {
 // メモする言葉を取得完了
 const MemoCompletedHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'IN_PROGRESS';
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoVal = intent.slots.any.value;
+        const memoVal = Alexa.getSlotValue(handlerInput.requestEnvelope, "any");
         const speechText = `「${memoVal}」とメモしたよ`;
         const uuid = getUniqueStr();
         const attributesManager = handlerInput.attributesManager;
@@ -246,8 +248,8 @@ function getUniqueStr(myStrong){
 // ヘルプ
 const HelpIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
         const speechText = 'メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。それではどうぞ！';
@@ -262,9 +264,9 @@ const HelpIntentHandler = {
 // キャンセルor終了と発話された
 const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
-                || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
+                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
         const speechText = 'バイバイ！またね！';
@@ -277,7 +279,7 @@ const CancelAndStopIntentHandler = {
 // セッション切れ
 const SessionEndedRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
     },
     handle(handlerInput) {
         // Any cleanup logic goes here.
@@ -441,7 +443,7 @@ Alexa-hostedを使えば、簡単にファイルを作成することができ�
 先程作成したjsonファイルをプログラムに適用します。  
 index.jsファイルを書き換えます。
 
-61行目にある`addDirective`のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。
+60行目にある`addDirective`のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。
 
 [https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js)
 
@@ -459,7 +461,7 @@ const skillBuilder = Alexa.SkillBuilders.custom().withPersistenceAdapter(
 // スキル起動時
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
         const speechText = 'メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。';
@@ -473,18 +475,17 @@ const LaunchRequestHandler = {
 // メモを保存or読み取り判別
 const MainIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'STARTED';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'STARTED';
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoSlot = intent.slots.stat;
+        const memoSlot = Alexa.getSlot(handlerInput.requestEnvelope, "stat");
         var modeVal = '';
         
         if (memoSlot.value !== null) {
-            if (memoSlot.resolutions["resolutionsPerAuthority"][0]["status"]["code"] === 'ER_SUCCESS_MATCH') {
-                modeVal = memoSlot.resolutions["resolutionsPerAuthority"][0]["values"][0]["value"]["name"];
+            if (memoSlot.resolutions.resolutionsPerAuthority[0].status.code === 'ER_SUCCESS_MATCH') {
+                modeVal = memoSlot.resolutions.resolutionsPerAuthority[0].values[0].value.name;
                 
                 if (modeVal === 'save') {
                     // メモする内容を聞きに行く
@@ -516,7 +517,7 @@ const MainIntentHandler = {
                                     "memoList": items
                                 }
                             }
-                        })            
+                        })                        
                         .getResponse();
                 }
             }
@@ -528,13 +529,12 @@ const MainIntentHandler = {
 // メモする言葉を取得完了
 const MemoCompletedHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'IN_PROGRESS';
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoVal = intent.slots.any.value;
+        const memoVal = Alexa.getSlotValue(handlerInput.requestEnvelope, "any");
         const speechText = `「${memoVal}」とメモしたよ`;
         const uuid = getUniqueStr();
         const attributesManager = handlerInput.attributesManager;
@@ -571,8 +571,8 @@ function getUniqueStr(myStrong){
 // ヘルプ
 const HelpIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
         const speechText = 'メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。それではどうぞ！';
@@ -587,9 +587,9 @@ const HelpIntentHandler = {
 // キャンセルor終了と発話された
 const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
-                || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
+                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
         const speechText = 'バイバイ！またね！';
@@ -602,7 +602,7 @@ const CancelAndStopIntentHandler = {
 // セッション切れ
 const SessionEndedRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
     },
     handle(handlerInput) {
         // Any cleanup logic goes here.
@@ -863,7 +863,7 @@ const skillBuilder = Alexa.SkillBuilders.custom().withPersistenceAdapter(
 // スキル起動時
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
         const speechText = 'メニューをタップしてください。';
@@ -888,7 +888,7 @@ const LaunchRequestHandler = {
 // シミュレーターではonPressが反応し、実機ではPressが反応するため2つ書いておく
 const TouchEventHandler = {
     canHandle(handlerInput) {
-    return ((handlerInput.requestEnvelope.request.type === 'Alexa.Presentation.APL.UserEvent' &&
+    return ((Alexa.getRequestType(handlerInput.requestEnvelope) === 'Alexa.Presentation.APL.UserEvent' &&
         (handlerInput.requestEnvelope.request.source.handler === 'Press' || 
         handlerInput.requestEnvelope.request.source.handler === 'onPress')));
     },
@@ -949,18 +949,17 @@ const TouchEventHandler = {
 // メモを保存or読み取り判別
 const MainIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'STARTED';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'STARTED';
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoSlot = intent.slots.stat;
+        const memoSlot = Alexa.getSlot(handlerInput.requestEnvelope, "stat");
         var modeVal = '';
         
         if (memoSlot.value !== null) {
-            if (memoSlot.resolutions["resolutionsPerAuthority"][0]["status"]["code"] === 'ER_SUCCESS_MATCH') {
-                modeVal = memoSlot.resolutions["resolutionsPerAuthority"][0]["values"][0]["value"]["name"];
+            if (memoSlot.resolutions.resolutionsPerAuthority[0].status.code === 'ER_SUCCESS_MATCH') {
+                modeVal = memoSlot.resolutions.resolutionsPerAuthority[0].values[0].value.name;
                 
                 if (modeVal === 'save') {
                     // メモする内容を聞きに行く
@@ -1004,15 +1003,14 @@ const MainIntentHandler = {
 // メモする言葉を取得完了
 const MemoCompletedHandler = {
     canHandle(handlerInput) {
-        return (handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS') ||
-            (handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'SaveIntent');
+        return (Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'IN_PROGRESS') ||
+            (Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SaveIntent');
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoVal = intent.slots.any.value;
+        const memoVal = Alexa.getSlotValue(handlerInput.requestEnvelope, "any");
         const speechText = `「${memoVal}」とメモしたよ`;
         const uuid = getUniqueStr();
         const attributesManager = handlerInput.attributesManager;
@@ -1059,8 +1057,8 @@ function getUniqueStr(myStrong){
 // ヘルプ
 const HelpIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
         const speechText = 'メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。それではどうぞ！';
@@ -1075,9 +1073,9 @@ const HelpIntentHandler = {
 // キャンセルor終了と発話された
 const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
-                || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
+                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
         const speechText = 'バイバイ！またね！';
@@ -1090,7 +1088,7 @@ const CancelAndStopIntentHandler = {
 // セッション切れ
 const SessionEndedRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
     },
     handle(handlerInput) {
         // Any cleanup logic goes here.
@@ -1173,7 +1171,31 @@ Duration: 10:00
 ![s152](images/s152.png)
 
 ### 6-2. コードを編集する
-`コードエディタ`タブをクリックします。`index.js`をクリックしてコードを編集します。
+`コードエディタ`タブをクリックします。`package.json`のask-sdkのバージョンを変更しておきます。
+
+![s153-1](images/s153-1.png)
+
+```javascript:package.json
+{
+  "name": "hello-world",
+  "version": "0.9.0",
+  "description": "alexa utility for quickly building skills",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Amazon Alexa",
+  "license": "ISC",
+  "dependencies": {
+    "ask-sdk-core": "^2.5.1",       // バージョン変える
+    "ask-sdk-model": "^1.9.0",      // バージョン変える
+    "aws-sdk": "^2.5.1"             // バージョン変える
+  }
+}
+
+```
+
+`index.js`をクリックしてコードを編集します。
 下記URLからコードをコピペしてください。
 
 [https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js](https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step4.js)

@@ -2,10 +2,10 @@ const Alexa = require('ask-sdk-core');
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        if (supportsDisplay(handlerInput)) {
+        if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)) {
             return MainAction(handlerInput);
         } else {
             const speechText = '申し訳ございません。このスキルは画面付きデバイスのみ対応しております。';
@@ -20,7 +20,7 @@ const LaunchRequestHandler = {
 function MainAction(handlerInput) {
     const S_TAKUMI = '<voice name="Takumi"><prosody rate="80%" pitch="-25%">新元号は<break time="500ms"/>「' //声質を変えるために、rateやpitchを追加
     const E_TAKUMI = '」<break time="500ms"/>であります。</prosody> </voice>'
-    const myList = '万中久乾亀亨享仁保元勝化吉同和喜嘉国大天字安宝寛寿平康延建弘徳応感慶成承授政文斉昌明昭景暦正武永治泰白祚神祥禄禎福老至興衡観護貞銅長雉雲霊養'
+    const myList = '万中久乾亀亨享仁保元勝化吉同和喜嘉国大天字安宝寛寿平康延建弘徳応感慶成承授政文斉昌明昭景暦正武永治泰白祚神祥禄禎福老至興衡観護貞銅長雉雲霊養令'
 
     // 生成する文字列の長さ
     var l = 2;
@@ -58,7 +58,7 @@ function MainAction(handlerInput) {
 }
 const SessionEndedRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
     },
     handle(handlerInput) {
         // Any cleanup logic goes here.
@@ -87,9 +87,9 @@ const ErrorHandler = {
 // NextIntent
 const NextPrevHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NextIntent' ||
-                handlerInput.requestEnvelope.request.intent.name === 'AMAZON.PreviousIntent');
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NextIntent' ||
+                Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.PreviousIntent');
     },
     handle(handlerInput) {
         const speechText = 'このスキルでは使用しません。新元号をランダムに生成します。「アレクサ、スタート」と言ってください。では、どうぞ。';
@@ -99,17 +99,6 @@ const NextPrevHandler = {
             .getResponse();
     }
 };
-
-// 画面付きかどうかチェック
-function supportsDisplay(handlerInput) {
-  const hasDisplay =
-    handlerInput.requestEnvelope.context &&
-    handlerInput.requestEnvelope.context.System &&
-    handlerInput.requestEnvelope.context.System.device &&
-    handlerInput.requestEnvelope.context.System.device.supportedInterfaces &&
-    handlerInput.requestEnvelope.context.System.device.supportedInterfaces.Display;
-  return hasDisplay;
-}
 
 // This handler acts as the entry point for your skill, routing all request and response
 // payloads to the handlers above. Make sure any new handlers or interceptors you've

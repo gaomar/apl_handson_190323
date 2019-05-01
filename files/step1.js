@@ -11,7 +11,7 @@ const skillBuilder = Alexa.SkillBuilders.custom().withPersistenceAdapter(
 // スキル起動時
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
         const speechText = 'メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。';
@@ -25,18 +25,17 @@ const LaunchRequestHandler = {
 // メモを保存or読み取り判別
 const MainIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'STARTED';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'STARTED';
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoSlot = intent.slots.stat;
+        const memoSlot = Alexa.getSlot(handlerInput.requestEnvelope, "stat");
         var modeVal = '';
         
         if (memoSlot.value !== null) {
-            if (memoSlot.resolutions["resolutionsPerAuthority"][0]["status"]["code"] === 'ER_SUCCESS_MATCH') {
-                modeVal = memoSlot.resolutions["resolutionsPerAuthority"][0]["values"][0]["value"]["name"];
+            if (memoSlot.resolutions.resolutionsPerAuthority[0].status.code === 'ER_SUCCESS_MATCH') {
+                modeVal = memoSlot.resolutions.resolutionsPerAuthority[0].values[0].value.name;
                 
                 if (modeVal === 'save') {
                     // メモする内容を聞きに行く
@@ -69,13 +68,12 @@ const MainIntentHandler = {
 // メモする言葉を取得完了
 const MemoCompletedHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MainIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MainIntent'
+            && Alexa.getDialogState(handlerInput.requestEnvelope) === 'IN_PROGRESS';
     },
     async handle(handlerInput) {
-        const intent = handlerInput.requestEnvelope.request.intent;
-        const memoVal = intent.slots.any.value;
+        const memoVal = Alexa.getSlotValue(handlerInput.requestEnvelope, "any");
         const speechText = `「${memoVal}」とメモしたよ`;
         const uuid = getUniqueStr();
         const attributesManager = handlerInput.attributesManager;
@@ -112,8 +110,8 @@ function getUniqueStr(myStrong){
 // ヘルプ
 const HelpIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
         const speechText = 'メモを保存する場合は「メモをセーブ」。メモを聞く場合は「メモをロード」と言ってください。それではどうぞ！';
@@ -128,9 +126,9 @@ const HelpIntentHandler = {
 // キャンセルor終了と発話された
 const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
-                || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
+                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
         const speechText = 'バイバイ！またね！';
@@ -143,7 +141,7 @@ const CancelAndStopIntentHandler = {
 // セッション切れ
 const SessionEndedRequestHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
     },
     handle(handlerInput) {
         // Any cleanup logic goes here.
