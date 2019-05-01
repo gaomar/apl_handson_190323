@@ -300,7 +300,11 @@ exports.handler = skillBuilder
       </google-codelab-step>
     
       <google-codelab-step label="APL対応しよう！" duration="7">
-        <h2 is-upgraded>4-1. APLファイルを作成しよう！</h2>
+        <h2 is-upgraded>4-1. APLを有効にしよう</h2>
+<p>Amazon Developer Consoleのビルドタブをクリックします。<br>左メニューにある<code>インターフェース</code>をクリックします。<br><code>Displayインターフェース</code>と<code>Alexa Presentation Language</code>のチェックを有効にしましょう。</p>
+<p>これでAPLの設定が有効になりました。</p>
+<p class="image-container"><img alt="s1400" src="img/d309c5423fb5dfee.png"></p>
+<h2 is-upgraded>4-2. APLファイルを作成しよう！</h2>
 <p>APLの画面レイアウトを作成するために、ファイルを新規で作成します。<br><br>Alexa-hostedを使えば、簡単にファイルを作成することができます。</p>
 <p><code>コ</code>ードエディタタブをクリックします。<code>lambda</code>フォルダを選択して、左上にある新規作成アイコンをクリックします。</p>
 <p class="image-container"><img alt="s120" src="img/48c53533f57833fb.png"></p>
@@ -390,7 +394,7 @@ exports.handler = skillBuilder
 </code></pre>
 <p>ファイルを保存し忘れないようにしましょう。</p>
 <p class="image-container"><img alt="s122" src="img/50bc29da340f99f7.png"></p>
-<h2 is-upgraded>4-2. APLを適用しよう！</h2>
+<h2 is-upgraded>4-3. APLを適用しよう！</h2>
 <p>先程作成したjsonファイルをプログラムに適用します。<br><br>index.jsファイルを書き換えます。</p>
 <p>60行目にある<code>addDirective</code>のdocumentにjsonファイルを指定します。data部分にS3から取得したデータ値を設定します。</p>
 <p><a href="https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js" target="_blank">https://raw.githubusercontent.com/gaomar/apl_handson_190323/master/files/step2.js</a></p>
@@ -588,7 +592,7 @@ exports.handler = skillBuilder
 </code></pre>
 <p>［Save］と［Deploy］ボタンを押し忘れないようにしましょう。</p>
 <p class="image-container"><img alt="s123" src="img/cec20204647f68fa.png"></p>
-<h2 is-upgraded>4-3. シミュレーターで確認しよう！</h2>
+<h2 is-upgraded>4-4. シミュレーターで確認しよう！</h2>
 <p>APL対応できたかをシミュレーターで確認しましょう。テストタブをクリックして、スキルを起動します。</p>
 <p class="image-container"><img alt="s124" src="img/baa23aa03ec49159.png"></p>
 
